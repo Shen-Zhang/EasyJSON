@@ -5,6 +5,16 @@ public class JSONString
       JSONValue
 {
 
+  // Fields
+  String str;
+
+  // Constructor
+  public JSONString(String str)
+  {
+    this.str = str;
+  } // JSONString(String)
+
+  // Methods
   @Override
   public String toJSONString()
   {

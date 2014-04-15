@@ -5,6 +5,16 @@ public class JSONConstant
       JSONValue
 {
 
+  // Fields
+  String constant;
+
+  // Constrcutor
+  public JSONConstant(String constant)
+  {
+    this.constant = constant;
+  } // JSONConstant
+
+  // Methods
   @Override
   public String toJSONString()
   {
