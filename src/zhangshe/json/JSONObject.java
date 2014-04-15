@@ -7,18 +7,21 @@ public class JSONObject
       JSONValue
 {
   // Fields
-  Hashtable<String, JSONValue> hash;
+  Hashtable<JSONValue, JSONValue> hash;
+  int length = 0;
 
   // Constructor
   public JSONObject()
   {
-    this.hash = new Hashtable<String, JSONValue>();
+    this.hash = new Hashtable<JSONValue, JSONValue>();
+    length++; //'{';
   } // JSONObject()
 
   // Methods
-  public void add(String key, JSONValue value)
+  public void add(JSONValue key, JSONValue value)
   {
     this.hash.put(key, value);
+    length += (key.size() + value.size() + 1); // ':'
   } // add(String, JSONValue)
 
   @Override
@@ -27,5 +30,11 @@ public class JSONObject
     // TODO Auto-generated method stub
     return null;
   } // toJSONString()
+
+  @Override
+  public int size()
+  {   
+    return length;
+  }
 
 } // class JSONObject

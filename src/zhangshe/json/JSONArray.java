@@ -8,17 +8,20 @@ public class JSONArray
 {
   // Fields
   ArrayList<JSONValue> array;
+  int length = 0;
 
   // Constructor
   public JSONArray()
   {
     this.array = new ArrayList<JSONValue>();
+    length++; // '['
   }
 
   // Methods
   void add(JSONValue val)
   {
     this.array.add(val);
+    length += val.size();
   } // add(JSONValue)
 
   @Override
@@ -27,5 +30,11 @@ public class JSONArray
     // TODO Auto-generated method stub
     return null;
   } // toJSONString()
+
+  @Override
+  public int size()
+  {
+    return length;
+  }
 
 } // class JSONParser

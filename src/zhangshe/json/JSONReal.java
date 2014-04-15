@@ -8,11 +8,14 @@ public class JSONReal
 {
   // Fields
   BigDecimal real;
+  int length;
 
   // Constructor
   public JSONReal(String str)
   {
+
     this.real = new BigDecimal(str);
+    this.length = str.length();
   } // JSONReal (String)
 
   // Methods
@@ -22,5 +25,11 @@ public class JSONReal
     // TODO Auto-generated method stub
     return null;
   } // toJSONString()
+
+  @Override
+  public int size()
+  {
+    return length;
+  }
 
 } // class JSONReal
