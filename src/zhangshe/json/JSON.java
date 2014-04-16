@@ -41,7 +41,6 @@ public class JSON
             case 't':
               return parseConstant(str);
               // JSONReal
-
             case '-':
             case '0':
             case '1':

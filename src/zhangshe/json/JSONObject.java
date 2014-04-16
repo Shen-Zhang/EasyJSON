@@ -32,13 +32,14 @@ public class JSONObject
 
     String str = "{";
     Enumeration<JSONValue> keys = hash.keys();
-    Enumeration<JSONValue> values = hash.elements();
+    //Enumeration<JSONValue> values = hash.elements();
 
-    for (int i = 1; i >0 ; i--)
+    while (keys.hasMoreElements())
       {
+        JSONValue temp = keys.nextElement();
         str +=
-            keys.nextElement().toJSONString() + ":"
-                + values.nextElement().toJSONString() + ",";
+            temp.toJSONString() + ":"
+                + hash.get(temp).toJSONString() + ",";
       } // for(i)
     str += "}";
     return str;
