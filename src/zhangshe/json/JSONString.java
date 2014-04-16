@@ -43,6 +43,8 @@ public class JSONString
   // +---------+
   /**
    * Convert a JSONString to String
+   * 
+   * @post A string is given
    */
   @Override
   public String toJSONString()
@@ -52,11 +54,13 @@ public class JSONString
 
   /**
    * Get the size of JSONString
+   * 
+   * @post An integer is given
    */
   @Override
   public int size()
   {
     return this.length;
-  }
+  } // size()
 
 } // class JSONString

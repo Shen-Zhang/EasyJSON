@@ -79,7 +79,7 @@ public class JSONObject
   /**
    * Get the size of the JSONObject
    * 
-   * @post an Integer is given
+   * @post An Integer is given
    */
   @Override
   public int size()

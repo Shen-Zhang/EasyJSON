@@ -4,7 +4,6 @@ package zhangshe.json;
  * A class to parse a String into JSONValue
  * 
  * @author Shen Zhang
- * 
  */
 public class JSON
 {
@@ -22,6 +21,8 @@ public class JSON
    * Parse a string. See README.md for more details.
    * 
    * @throws JSONException
+   * @pre str is a valid string
+   * @post A JSONValue is given, or a JSONException is thrown
    */
   public static JSONValue parse(String str)
     throws JSONException
@@ -76,6 +77,9 @@ public class JSON
    *          A valid string
    * @return JSONObject
    * @throws JSONException
+   * 
+   * @pre str is a valid string
+   * @post A JSONObject is given, or a JSONException is thrown
    */
   public static JSONObject parseObj(String str)
     throws JSONException
@@ -139,6 +143,9 @@ public class JSON
    *          A valid string
    * @return JSONString
    * @throws JSONException
+   * 
+   * @pre str is a valid string
+   * @post A JSONString is given, or a JSONException is thrown
    */
   public static JSONString parseStr(String str)
     throws JSONException
@@ -171,6 +178,9 @@ public class JSON
    *          A valid string
    * @return JSONArray
    * @throws JSONException
+   * 
+   * @pre str is a valid string
+   * @post A JSONArray is given, or a JSONException is thrown
    */
 
   public static JSONArray parseArr(String str)
@@ -222,6 +232,9 @@ public class JSON
    *          A valid string
    * @return JSONReal
    * @throws JSONException
+   * 
+   * @pre str is a valid string
+   * @post A JSONReal is given, or a JSONException is thrown
    */
   public static JSONReal parseNum(String str)
     throws JSONException
@@ -329,6 +342,9 @@ public class JSON
    *          A valid String
    * @return JSONConstant
    * @throws JSONException
+   * 
+   * @pre str is a valid string
+   * @post A JSONConstant is given, or a JSONException is thrown
    */
   public static JSONConstant parseConstant(String str)
     throws JSONException

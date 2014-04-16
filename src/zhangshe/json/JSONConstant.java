@@ -43,6 +43,7 @@ public class JSONConstant
   // +---------+
   /**
    * Convert a JSONConstant to a string
+   * @post A string is given
    */
   @Override
   public String toJSONString()
@@ -52,6 +53,7 @@ public class JSONConstant
 
   /**
    * Get the size of a JSONConstant
+   * @post An integer is given
    */
   @Override
   public int size()

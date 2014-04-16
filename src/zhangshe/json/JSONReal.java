@@ -45,6 +45,7 @@ public class JSONReal
   // +---------+
   /**
    * Convert the JSONReal back to string
+   * @post A string is given
    */
   @Override
   public String toJSONString()
@@ -54,6 +55,7 @@ public class JSONReal
 
   /**
    * Get the size of the JSONReal
+   * @post An integer is given
    */
   @Override
   public int size()
