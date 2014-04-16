@@ -162,7 +162,7 @@ public class JSON
                   }
                 if (str.charAt(i + 1) == ']')
                   {
-                    arr.length = i + 1;
+                    arr.length = i + 2;
                     System.out.println("parseArr: arrLength " + arr.length);
                     System.out.println("finished");
                     return arr;

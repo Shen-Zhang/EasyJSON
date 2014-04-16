@@ -10,7 +10,7 @@ public class JSONConstant
 
   int length;
 
-  // Constrcutor
+  // Constructor
   public JSONConstant(String constant)
   {
     this.constant = constant;
@@ -27,7 +27,6 @@ public class JSONConstant
   @Override
   public int size()
   {
-
     return length;
   }
 

@@ -9,6 +9,7 @@ public class JSONParserEXPT
     throws JSONException
   {
     PrintWriter pen = new PrintWriter(System.out, true);
+    String i = "[15]";
     String a = "[\"Hello\",\"hello\",\"abc\",\"2312e2\"]";
     String b = "[3,\"Hello\",null]";
     String g = "[3,\"Hello\",null,[3]]";
@@ -19,8 +20,8 @@ public class JSONParserEXPT
     String f =
         "{\"name\":\"sam\",\"job\":{\"employer\":\"Grinnell\",\"title\":\"Professor\"},\"alive\":true}";
     String h =
-        "{\"name\":\"sam\",\"grades\":{\"exam1\":80,\"exam2\":85,\"final\":100},\"letter\":\"B\"}";
-    JSONValue val = JSON.parse(d);
+        "{\"name\":\"sam\",\"grades\":{\"exam1\":80,\"exam2\":[85],\"final\":{\"A\":100}},\"letter\":\"B\"}";
+    JSONValue val = JSON.parse(h);
     pen.println(val.toJSONString());
     /*
      * JSONString s = new JSONString("a"); JSONString z = new JSONString("b");

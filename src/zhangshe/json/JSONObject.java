@@ -1,6 +1,5 @@
 package zhangshe.json;
 
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -30,16 +29,15 @@ public class JSONObject
   public String toJSONString()
   {
 
-    String str = "{";
-    Enumeration<JSONValue> keys = hash.keys();
-    //Enumeration<JSONValue> values = hash.elements();
+    String str = "{"; // initialize the string
+    Enumeration<JSONValue> keys = hash.keys(); // get all keys in the HashTable
 
     while (keys.hasMoreElements())
       {
         JSONValue temp = keys.nextElement();
-        str +=
-            temp.toJSONString() + ":"
-                + hash.get(temp).toJSONString() + ",";
+        str += temp.toJSONString() + ":" + hash.get(temp).toJSONString();
+        if (keys.hasMoreElements())
+          str += ",";
       } // for(i)
     str += "}";
     return str;

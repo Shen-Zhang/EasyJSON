@@ -1,6 +1,5 @@
 package zhangshe.json;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class JSONArray
@@ -30,11 +29,12 @@ public class JSONArray
   public String toJSONString()
   {
     String str = "[";
-    for(int i = 0; i < array.size();i++)
+    int i = 0;
+    for(i = 0; i < array.size()-1;i++)
       {
         str+=array.get(i).toJSONString()+",";
       } // for(i)
-    str+="]";
+    str+= array.get(i).toJSONString() + "]";
     return str;
   } // toJSONString()
 
