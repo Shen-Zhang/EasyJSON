@@ -7,13 +7,14 @@ public class JSONString
 
   // Fields
   String str;
-  int length;
+  int length = 0;
 
   // Constructor
   public JSONString(String str)
   {
     this.str = str;
     this.length = str.length();
+    System.out.println("JSONString: length is " + this.length);
   } // JSONString(String)
 
   // Methods
@@ -28,7 +29,8 @@ public class JSONString
   @Override
   public int size()
   {
-    return length;
+    
+    return this.length;
   }
 
 } // class JSONString

@@ -21,6 +21,7 @@ public class JSONArray
   void add(JSONValue val)
   {
     this.array.add(val);
+    System.out.println("JSONArray: add 1");
     length += val.size();
   } // add(JSONValue)
 

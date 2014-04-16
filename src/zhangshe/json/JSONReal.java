@@ -13,9 +13,10 @@ public class JSONReal
   // Constructor
   public JSONReal(String str)
   {
-
     this.real = new BigDecimal(str);
+    System.out.println("JSONReal:" + this.real);
     this.length = str.length();
+    System.out.println("JSONReal: length is " + this.length);
   } // JSONReal (String)
 
   // Methods

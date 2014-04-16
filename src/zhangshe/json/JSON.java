@@ -1,7 +1,5 @@
 package zhangshe.json;
 
-import java.util.Stack;
-
 public class JSON
 {
 
@@ -16,7 +14,6 @@ public class JSON
    * 
    * @throws JSONException
    */
-  @SuppressWarnings("unchecked")
   public static JSONValue parse(String str)
     throws JSONException
   {
@@ -29,7 +26,7 @@ public class JSON
       }
     else
       {
-        System.out.println("First char: " + ch);
+        System.out.println("JSON.parse(): First char: " + ch);
         checkFirst = true;
         switch (ch)
           {
@@ -42,7 +39,9 @@ public class JSON
             case 'n': // JSONConstant
             case 'f':// JSONConstant
             case 't':
+              return parseConstant(str);
               // JSONReal
+
             case '-':
             case '0':
             case '1':
@@ -55,8 +54,7 @@ public class JSON
             case '8':
             case '9':
               return parseNum(str);
-          }
-        System.out.println("finished");
+          } // switch(ch)
       }
     return null;
   }// parse(String str)
@@ -64,7 +62,6 @@ public class JSON
   public static JSONObject parseObj(String str)
     throws JSONException
   {
-    boolean checkQuote = false;
     if (str.charAt(0) != '{')
       throw new JSONException("Invalid input: JSONObject should begin with '{'");
     else if (str.charAt(1) != '"')
@@ -73,17 +70,26 @@ public class JSON
     else
       {
         JSONObject obj = new JSONObject();
+
         for (int i = 1; i < str.length(); i++)
           {
+            if (str.charAt(i) == '}')
+              {
+                obj.length++;
+                return obj;
+              }
             JSONValue key = parse(str.substring(i));
             i += key.size();
+            System.out.println("parseObj: i is " + i);
             if (str.charAt(i) != ':')
               throw new JSONException("Invalid input: Expected ':', given"
                                       + str.charAt(i));
             else
               {
+                i++;
                 JSONValue val = parse(str.substring(i));
                 obj.add(key, val);
+                i += val.size();
               } // if
           } // for(i)
         return obj;
@@ -104,7 +110,8 @@ public class JSON
           {
             if (str.charAt(i) == '"')
               {
-                return new JSONString(str.substring(0, i));
+                System.out.println("parseStr: " + str.substring(0, i + 1));
+                return new JSONString(str.substring(0, i + 1));
               } // if
           } // for(i)
         throw new JSONException(
@@ -120,25 +127,38 @@ public class JSON
     else
       {
         JSONArray arr = new JSONArray();
+        if (str.charAt(1) == ']')
+          return arr;
 
         for (int i = 1; i < str.length(); i++)
           {
+            System.out.println("parseArr: before parse: " + str.substring(i));
             JSONValue val = parse(str.substring(i));
+
             arr.add(val);
-            i += val.size();
-            if (i + 1 < str.length())
+            i = i + val.size() - 1;
+            System.out.println("parseArr: i is " + i);
+            while (i + 1 < str.length())
               {
                 if (str.charAt(i + 1) == ',')
-                  parse(str.substring(i + 2));
+                  {
+                    i++;
+                    JSONValue temp = parse(str.substring(i + 1));
+                    arr.add(temp);
+                    i += temp.size();
+                    System.out.println("parseArr: i is (in side ,) " + i);
+                  }
                 if (str.charAt(i + 1) == ']')
                   {
-                  System.out.println(']');
-                  System.out.println(arr.length);
+                    arr.length = i + 1;
+                    System.out.println("parseArr: arrLength " + arr.length);
+                    System.out.println("finished");
                     return arr;
                   }
-                else
-                  throw new JSONException("Invalid input:");
+                // else
+                // throw new JSONException("Invalid input:");
               } // if i+1 < str.length()
+            System.out.println("parseArr: for loop 1 time");
           } // for(i)
       } // if
     return null;
@@ -148,10 +168,9 @@ public class JSON
     throws JSONException
   {
     boolean period = false;
-    boolean zeroFirst = false;
     boolean negate = false;
     boolean e = false;
-    if (!Character.isDigit(str.charAt(0)) || str.charAt(0) != '-')
+    if (!Character.isDigit(str.charAt(0)) && str.charAt(0) != '-')
       {
         throw new JSONException(
                                 "Invalid input: JSONReal should begin with a digit");
@@ -168,18 +187,21 @@ public class JSON
                 case ',':
                 case '}':
                 case ']':
-                  return new JSONReal(temp);
-
+                  {
+                    System.out.println("parseNum: " + num);
+                    return new JSONReal(temp);
+                  }
                 case '-':
                   {
                     if (negate)
                       throw new JSONException("Invalid input: negative sign");
                     else
                       {
-                        temp.concat("-");
+                        temp += "-";
                         negate = true;
                         i++;
                       }
+                    break;
                   } // case -
                 case 'e':
                   {
@@ -187,10 +209,11 @@ public class JSON
                       throw new JSONException("Invalid input: e");
                     else
                       {
-                        temp.concat("e");
+                        temp += "e";
                         e = true;
                         i++;
                       }
+                    break;
                   } // case e
                 case '.':
                   {
@@ -198,10 +221,11 @@ public class JSON
                       throw new JSONException("Invalid input: period");
                     else
                       {
-                        temp.concat(".");
+                        temp += ".";
                         period = true;
                         i++;
                       }
+                    break;
                   } // case .
                 case '0':
                 case '1':
@@ -215,7 +239,9 @@ public class JSON
                 case '9':
                   {
                     i++;
-                    temp.concat(Character.toString(num));
+                    temp += Character.toString(num);
+
+                    break;
                   }
                 default:
                   throw new JSONException("Invalid input: not a valid number");
@@ -226,11 +252,11 @@ public class JSON
     return null;
   } // parseNum(Str)
 
-  public JSONReal parseConstant(String str)
+  public static JSONConstant parseConstant(String str)
     throws JSONException
   {
     char ch = str.charAt(0);
-    if (ch != 'n' || ch != 'f' || ch != 't')
+    if (ch != 'n' && ch != 'f' && ch != 't')
       throw new JSONException(
                               "Invalid input: JSONConstant expects null, true, or false.");
     else
@@ -238,23 +264,23 @@ public class JSON
         switch (ch)
           {
             case 'n':
-              if (str.substring(0, 3).compareTo("null") != 0)
+              if (str.substring(0, 4).compareTo("null") != 0)
                 throw new JSONException(
                                         "Invalid input: JSONConstant expects null, true, or false.");
               else
-                return new JSONReal("null");
+                return new JSONConstant("null");
             case 'f':
-              if (str.substring(0, 3).compareTo("false") != 0)
+              if (str.substring(0, 5).compareTo("false") != 0)
                 throw new JSONException(
                                         "Invalid input: JSONConstant expects null, true, or false.");
               else
-                return new JSONReal("false");
+                return new JSONConstant("false");
             case 't':
-              if (str.substring(0, 3).compareTo("true") != 0)
+              if (str.substring(0, 4).compareTo("true") != 0)
                 throw new JSONException(
                                         "Invalid input: JSONConstant expects null, true, or false.");
               else
-                return new JSONReal("true");
+                return new JSONConstant("true");
             default:
               throw new JSONException(
                                       "Invalid input: JSONConstant expects null, true, or false.");
