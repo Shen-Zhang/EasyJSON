@@ -1,5 +1,7 @@
 package zhangshe.json;
 
+import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 public class JSONObject
@@ -14,7 +16,7 @@ public class JSONObject
   public JSONObject()
   {
     this.hash = new Hashtable<JSONValue, JSONValue>();
-    length++; //'{';
+    length++; // '{';
   } // JSONObject()
 
   // Methods
@@ -27,13 +29,24 @@ public class JSONObject
   @Override
   public String toJSONString()
   {
-    // TODO Auto-generated method stub
-    return null;
+
+    String str = "{";
+    Enumeration<JSONValue> keys = hash.keys();
+    Enumeration<JSONValue> values = hash.elements();
+
+    for (int i = 1; i >0 ; i--)
+      {
+        str +=
+            keys.nextElement().toJSONString() + ":"
+                + values.nextElement().toJSONString() + ",";
+      } // for(i)
+    str += "}";
+    return str;
   } // toJSONString()
 
   @Override
   public int size()
-  {   
+  {
     return length;
   }
 

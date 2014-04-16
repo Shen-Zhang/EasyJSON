@@ -70,28 +70,38 @@ public class JSON
     else
       {
         JSONObject obj = new JSONObject();
-
-        for (int i = 1; i < str.length(); i++)
+        int i = 1;
+        while (i < str.length())
           {
             if (str.charAt(i) == '}')
               {
-                obj.length++;
+                obj.length = i;
+                i++;
                 return obj;
-              }
+              } // if
             JSONValue key = parse(str.substring(i));
             i += key.size();
-            System.out.println("parseObj: i is " + i);
             if (str.charAt(i) != ':')
               throw new JSONException("Invalid input: Expected ':', given"
                                       + str.charAt(i));
             else
               {
-                i++;
+                i++; // ':'
                 JSONValue val = parse(str.substring(i));
                 obj.add(key, val);
                 i += val.size();
+                if (str.charAt(i) == ',')
+                  i++;
+                else if (str.charAt(i) == '}')
+                  {
+                    obj.length = i+1;
+                    i++;
+                    return obj;
+                  }
+                else
+                  throw new JSONException();
               } // if
-          } // for(i)
+          } // while
         return obj;
       } // if
 
@@ -111,6 +121,9 @@ public class JSON
             if (str.charAt(i) == '"')
               {
                 System.out.println("parseStr: " + str.substring(0, i + 1));
+                if (str.charAt(i + 1) != ',' && str.charAt(i + 1) != '}'
+                    && str.charAt(i + 1) != ']' && str.charAt(i + 1) != ':')
+                  throw new JSONException();
                 return new JSONString(str.substring(0, i + 1));
               } // if
           } // for(i)

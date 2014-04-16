@@ -21,9 +21,8 @@ public class JSONString
 
   @Override
   public String toJSONString()
-  {
-    // TODO Auto-generated method stub
-    return null;
+  { 
+    return this.str;
   } // toJSONString()
 
   @Override

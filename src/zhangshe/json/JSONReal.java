@@ -23,8 +23,7 @@ public class JSONReal
   @Override
   public String toJSONString()
   {
-    // TODO Auto-generated method stub
-    return null;
+    return this.real.toString();
   } // toJSONString()
 
   @Override

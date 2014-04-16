@@ -1,5 +1,6 @@
 package zhangshe.json;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class JSONArray
@@ -28,8 +29,13 @@ public class JSONArray
   @Override
   public String toJSONString()
   {
-    // TODO Auto-generated method stub
-    return null;
+    String str = "[";
+    for(int i = 0; i < array.size();i++)
+      {
+        str+=array.get(i).toJSONString()+",";
+      } // for(i)
+    str+="]";
+    return str;
   } // toJSONString()
 
   @Override
