@@ -2,34 +2,63 @@ package zhangshe.json;
 
 import java.math.BigDecimal;
 
+/**
+ * A JSON representation of real numbers
+ * 
+ * @author Shen Zhang
+ * 
+ */
 public class JSONReal
     implements
       JSONValue
 {
-  // Fields
+  // +--------+----------------------------------------------------------
+  // | Fields |
+  // +--------+
+  /**
+   * Store the value of the number
+   */
   BigDecimal real;
-  int length;
 
-  // Constructor
+  /**
+   * Store the length of the string of a number
+   */
+  int length = 0;
+
+  // +-------------+----------------------------------------------------------
+  // | Constructor |
+  // +-------------+
+  /**
+   * Construct a JSONReal
+   * 
+   * @param str
+   *          a valid string
+   */
   public JSONReal(String str)
   {
     this.real = new BigDecimal(str);
-    System.out.println("JSONReal:" + this.real);
     this.length = str.length();
-    System.out.println("JSONReal: length is " + this.length);
   } // JSONReal (String)
 
-  // Methods
+  // +---------+----------------------------------------------------------
+  // | Methods |
+  // +---------+
+  /**
+   * Convert the JSONReal back to string
+   */
   @Override
   public String toJSONString()
   {
     return this.real.toString();
   } // toJSONString()
 
+  /**
+   * Get the size of the JSONReal
+   */
   @Override
   public int size()
   {
     return length;
-  }
+  } // size()
 
 } // class JSONReal

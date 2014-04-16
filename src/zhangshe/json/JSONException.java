@@ -1,13 +1,32 @@
 package zhangshe.json;
 
-/* Citation: http://stackoverflow.com/questions/1754315/how-to-create-our-own-exceptions-in-java */
+/**
+ * Citation: Use the method in the following website as a referrence.
+ * http://stackoverflow
+ * .com/questions/1754315/how-to-create-our-own-exceptions-in-java
+ * 
+ * To throw an Exception
+ * 
+ * @author Shen Zhang
+ * 
+ */
+
+@SuppressWarnings("serial")
 public class JSONException
     extends
       Exception
 {
-  // Fields
+  // +--------+----------------------------------------------------------
+  // | Fields |
+  // +--------+
   String msg = null;
 
+  // +--------------+----------------------------------------------------------
+  // | Constructors |
+  // +--------------+
+  /**
+   * A bunch of JSONExceptions
+   */
   public JSONException()
   {
     super();

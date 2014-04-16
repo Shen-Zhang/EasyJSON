@@ -1,34 +1,61 @@
 package zhangshe.json;
 
+/**
+ * A JSON representation of strings
+ * 
+ * @author Shen Zhang
+ * 
+ */
 public class JSONString
     implements
       JSONValue
 {
 
-  // Fields
+  // +--------+----------------------------------------------------------
+  // | Fields |
+  // +--------+
+  /**
+   * Store the content of the string
+   */
   String str;
+  /**
+   * Store the lenght of the string
+   */
   int length = 0;
 
-  // Constructor
+  // +-------------+----------------------------------------------------------
+  // | Constructor |
+  // +-------------+
+  /**
+   * Construct a JSONString by given string
+   * 
+   * @param str
+   *          A valid string
+   */
   public JSONString(String str)
   {
     this.str = str;
     this.length = str.length();
-    System.out.println("JSONString: length is " + this.length);
   } // JSONString(String)
 
-  // Methods
-
+  // +---------+----------------------------------------------------------
+  // | Methods |
+  // +---------+
+  /**
+   * Convert a JSONString to String
+   */
   @Override
   public String toJSONString()
-  { 
+  {
     return this.str;
   } // toJSONString()
 
+  /**
+   * Get the size of JSONString
+   */
   @Override
   public int size()
   {
-    
     return this.length;
   }
 

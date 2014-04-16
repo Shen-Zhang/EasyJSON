@@ -1,5 +1,11 @@
 package zhangshe.json;
 
+/**
+ * An interface of each JSONValue
+ * 
+ * @author Shen Zhang
+ * 
+ */
 public interface JSONValue
 {
   /**
@@ -10,7 +16,7 @@ public interface JSONValue
   /**
    * Get the size of the JSONValue
    * 
-   * @return
+   * @return An integer, the size of the JSONValue
    */
   public int size();
 } // interface JSonObject

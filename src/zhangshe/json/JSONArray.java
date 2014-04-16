@@ -6,22 +6,28 @@ public class JSONArray
     implements
       JSONValue
 {
-  // Fields
+
+  // +--------+----------------------------------------------------------
+  // | Fields |
+  // +--------+
   ArrayList<JSONValue> array;
   int length = 0;
 
-  // Constructor
+  // +-------------+----------------------------------------------------------
+  // | Constructor |
+  // +-------------+
   public JSONArray()
   {
     this.array = new ArrayList<JSONValue>();
     length++; // '['
   }
 
-  // Methods
+  // +---------+----------------------------------------------------------
+  // | Methods |
+  // +---------+
   void add(JSONValue val)
   {
     this.array.add(val);
-    System.out.println("JSONArray: add 1");
     length += val.size();
   } // add(JSONValue)
 
@@ -30,11 +36,13 @@ public class JSONArray
   {
     String str = "[";
     int i = 0;
-    for(i = 0; i < array.size()-1;i++)
+    if (array.size() == 0)
+      return str + "]";
+    for (i = 0; i < array.size() - 1; i++)
       {
-        str+=array.get(i).toJSONString()+",";
+        str += array.get(i).toJSONString() + ",";
       } // for(i)
-    str+= array.get(i).toJSONString() + "]";
+    str += array.get(i).toJSONString() + "]";
     return str;
   } // toJSONString()
 
