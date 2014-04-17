@@ -74,6 +74,7 @@ public class JSONTest
     assertEquals("[null]", JSON.parse("[null]").toJSONString());
     assertEquals("[false]", JSON.parse("[false]").toJSONString());
     assertEquals("[true]", JSON.parse("[true]").toJSONString());
+    assertEquals("[true,false,null,false,true]", JSON.parse("[true,false,null,false,true]").toJSONString());
   } // testConstant()
 
   @Test
