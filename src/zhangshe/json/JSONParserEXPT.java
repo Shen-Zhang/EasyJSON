@@ -23,7 +23,7 @@ public class JSONParserEXPT
         "{\"abc\":null,\"dsa\":3,\"ds\":[\"Hello\",\"hello\",\"abc\",\"231232\"]}";
     String d = "{\"a\":\"rebelsky\",\"b\":354,\"c\":3214,\"d\":32154}";
 
-    JSONValue val = JSON.parse(g);
+    JSONValue val = JSON.parse(d);
 
     pen.println(val.toJSONString());
 

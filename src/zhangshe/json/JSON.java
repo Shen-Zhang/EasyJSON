@@ -88,14 +88,18 @@ public class JSON
       throw new JSONException(
                               "Invalid input: JSONObject should begin with '{', given"
                                   + str.charAt(0));
+    else if (str.charAt(1) == '}')
+      return new JSONObject();
     else if (str.charAt(1) != '"')
       throw new JSONException(
                               "Invalid input: The first item in JSONObject should be a string, given "
                                   + str.charAt(1));
     else
       {
+       
         JSONObject obj = new JSONObject(); // create a new JSONObject
         int i = 1;
+        
         while (i < str.length())
           {
             if (str.charAt(i) == '}') // hit the end of an JSONObject
