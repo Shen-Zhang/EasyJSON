@@ -1,11 +1,16 @@
 package zhangshe.json;
 
+import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
 public class JSONObject
     implements JSONValue
 {
+  /**
+   * A PrintWriter for print()
+   */
+  static PrintWriter pen = new PrintWriter(System.out, true);
   // +--------+----------------------------------------------------------
   // | Fields |
   // +--------+
@@ -86,4 +91,37 @@ public class JSONObject
     return length;
   } // size()
 
+  @Override
+  public void print()
+  {
+    this.print(1,0);
+  } // print()
+
+  @Override
+  public void print(int begin, int format)
+  {
+    pen.format("%" + begin + "s", "{");
+
+    Enumeration<JSONValue> keys = hash.keys(); // get all keys in the HashTable
+    if (!keys.hasMoreElements())
+      {
+        pen.print("}");
+        pen.flush();
+        return;
+      } // if keys have no more elements
+    while (keys.hasMoreElements())
+      {
+        pen.println();
+        JSONValue temp = keys.nextElement();
+        temp.print(begin+2, format);
+        pen.print(":");
+        pen.flush();
+        hash.get(temp).print(format,0);
+        if (keys.hasMoreElements())
+          pen.print(",");
+      } // for(i)
+    pen.println();
+    pen.format("%" + (format + 1) + "s", "}");
+    pen.flush();
+  } // print(String)
 } // class JSONObject

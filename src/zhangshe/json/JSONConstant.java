@@ -1,5 +1,7 @@
 package zhangshe.json;
 
+import java.io.PrintWriter;
+
 /**
  * A JSON representation of null, true and false
  * 
@@ -9,6 +11,10 @@ package zhangshe.json;
 public class JSONConstant
     implements JSONValue
 {
+  /**
+   * A PrintWriter for print()
+   */
+  static PrintWriter pen = new PrintWriter(System.out, true);
 
   // +--------+----------------------------------------------------------
   // | Fields |
@@ -60,4 +66,18 @@ public class JSONConstant
     return length;
   } // size()
 
+  @Override 
+  public void print()
+  {
+    this.print(0,0);
+  } // print(int)
+  
+  @Override
+  public void print(int begin, int format)
+  {
+    pen.format("%" + begin + "s", "");
+    pen.print(this.constant);
+    
+    pen.flush();
+  } // print(String)
 } // class JSONConstant

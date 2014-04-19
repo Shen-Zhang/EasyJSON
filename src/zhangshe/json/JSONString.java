@@ -1,5 +1,7 @@
 package zhangshe.json;
 
+import java.io.PrintWriter;
+
 /**
  * A JSON representation of strings
  * 
@@ -9,7 +11,10 @@ package zhangshe.json;
 public class JSONString
     implements JSONValue
 {
-
+  /**
+   * A PrintWriter for print()
+   */
+  static PrintWriter pen = new PrintWriter(System.out, true);
   // +--------+----------------------------------------------------------
   // | Fields |
   // +--------+
@@ -61,5 +66,19 @@ public class JSONString
   {
     return this.length;
   } // size()
+
+  @Override
+  public void print()
+  {
+    this.print(0,0);
+  } // print()
+  
+  @Override
+  public void print(int begin, int format)
+  {
+    pen.format("%" + begin + "s", "");
+    pen.print(this.str);
+    pen.flush();
+  } // print(String)
 
 } // class JSONString

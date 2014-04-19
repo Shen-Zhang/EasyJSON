@@ -1,5 +1,6 @@
 package zhangshe.json;
 
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 
 /**
@@ -11,6 +12,10 @@ import java.math.BigDecimal;
 public class JSONReal
     implements JSONValue
 {
+  /**
+   * A PrintWriter for print()
+   */
+  static PrintWriter pen = new PrintWriter(System.out, true);
   // +--------+----------------------------------------------------------
   // | Fields |
   // +--------+
@@ -61,5 +66,18 @@ public class JSONReal
   {
     return length;
   } // size()
+
+  @Override
+  public void print()
+  {
+    this.print(0,0);
+  } // print()
+
+  @Override
+  public void print(int begin, int format)
+  {
+    pen.format("%" + (begin+this.size()) + "s", this.real);
+    pen.flush();
+  } // print(String)
 
 } // class JSONReal

@@ -1,5 +1,6 @@
 package zhangshe.json;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
@@ -11,6 +12,12 @@ import java.util.ArrayList;
 public class JSONArray
     implements JSONValue
 {
+
+  /**
+   * A PrintWriter for print()
+   */
+  static PrintWriter pen = new PrintWriter(System.out, true);
+
   // +--------+----------------------------------------------------------
   // | Fields |
   // +--------+
@@ -86,4 +93,35 @@ public class JSONArray
     return length;
   } // size()
 
+  @Override
+  public void print()
+  {
+    this.print(1, 0);
+  } // print()
+
+  @Override
+  public void print(int begin, int format)
+  {
+
+    //format += "  ";
+    //pen.println();
+    pen.format("%" + begin + "s", "[");
+    if (array.size() == 0)
+      pen.print("]");
+    else
+      {
+        pen.println();
+        int i = 0;
+        int newBegin = begin + 2;
+        for (i = 0; i < array.size() - 1; i++)
+          {
+            array.get(i).print(newBegin, format+2);
+            pen.println(",");
+          } // for (i)
+        array.get(i).print(newBegin, format+2);
+        pen.println();
+        pen.format("%" + begin + "s", "]");
+        pen.flush();
+      } // if array.size() != 0
+  } // print(int)
 } // class JSONParser

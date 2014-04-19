@@ -19,4 +19,14 @@ public interface JSONValue
    * @return An integer, the size of the JSONValue
    */
   public int size();
+
+  /**
+   *  Print a JSONValue
+   */
+  public void print();
+
+  /**
+   * Print a JSONValue with a specific number of spaces before it
+   */
+  public void print(int begin, int format);
 } // interface JSonObject
