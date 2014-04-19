@@ -13,6 +13,7 @@ public class JSONTest
   {
     assertEquals("[]", JSON.parse("[]").toJSONString());
     assertEquals("{}", JSON.parse("{}").toJSONString());
+    assertEquals("[{}]", JSON.parse("[{}]").toJSONString());
   } // testEmpty
 
   @Test

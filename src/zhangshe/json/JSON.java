@@ -89,7 +89,11 @@ public class JSON
                               "Invalid input: JSONObject should begin with '{', given"
                                   + str.charAt(0));
     else if (str.charAt(1) == '}')
-      return new JSONObject();
+      {
+        JSONObject empty = new JSONObject();
+        empty.length++;
+        return empty;
+      } // if str.charAt(1) = }
     else if (str.charAt(1) != '"')
       throw new JSONException(
                               "Invalid input: The first item in JSONObject should be a string, given "
@@ -206,7 +210,7 @@ public class JSON
 
             arr.add(val); // add value to the array
             i = i + val.size() - 1; // increment i
-            while (i + 1 < str.length())
+            while (i+1 < str.length())
               {
                 if (str.charAt(i + 1) == ',')
                   {
@@ -286,6 +290,7 @@ public class JSON
                       } // if negate is true
                     break;
                   } // case -
+                case 'E':
                 case 'e':
                   {
                     if (e)
