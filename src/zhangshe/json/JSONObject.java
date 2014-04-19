@@ -4,8 +4,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 public class JSONObject
-    implements
-      JSONValue
+    implements JSONValue
 {
   // +--------+----------------------------------------------------------
   // | Fields |
@@ -85,6 +84,6 @@ public class JSONObject
   public int size()
   {
     return length;
-  }
+  } // size()
 
 } // class JSONObject

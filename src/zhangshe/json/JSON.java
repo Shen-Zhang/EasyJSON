@@ -96,10 +96,10 @@ public class JSON
                                   + str.charAt(1));
     else
       {
-       
+
         JSONObject obj = new JSONObject(); // create a new JSONObject
         int i = 1;
-        
+
         while (i < str.length())
           {
             if (str.charAt(i) == '}') // hit the end of an JSONObject
@@ -107,9 +107,8 @@ public class JSON
                 obj.length = i;
                 i++;
                 return obj;
-              } // if
-            JSONValue key = parse(str.substring(i)); // get a JSONString as a
-                                                     // key
+              } // if str.charAt(i) = }
+            JSONValue key = parse(str.substring(i)); // get a JSONString as a key
             i += key.size();
             if (str.charAt(i) != ':')
               throw new JSONException("Invalid input: Expect ':', given"
@@ -133,12 +132,11 @@ public class JSON
                   throw new JSONException(
                                           "Invalid input: Expect ',' or '}', but given "
                                               + str.charAt(i));
-              } // if
-          } // while
+              } // if str.charAt(i) != }
+          } // while i < str.length()
         throw new JSONException("Invalid input");
-        // return obj;
-      } // if
-  } // parse
+      } // else 
+  } // parseObj(String)
 
   /**
    * Parse a string to a JSONString
@@ -172,8 +170,8 @@ public class JSON
           } // for(i)
         throw new JSONException(
                                 "Invalid input: JSONString should end with a double quotation mark");
-      } // else
-  } // parseStr
+      } // if str.charAt(0) = "
+  } // parseStr(String)
 
   /**
    * Parse a string to a JSONArray
@@ -225,7 +223,7 @@ public class JSON
                 // else
               } // if i+1 < str.length()
           } // for(i)
-      } // if
+      } // if str.charAt(0) = [
     throw new JSONException("Invalid input");
   } // parseArr(String)
 
@@ -273,47 +271,47 @@ public class JSON
                 case ',':
                 case '}':
                 case ']':
-                  return new JSONReal(temp);
+                  return new JSONReal(temp); // hit the end of a number
                 case '-':
                   {
                     if (negate)
                       throw new JSONException(
-                                              "Invalid input: expect a number, given"
+                                              "Invalid input: Negative sign cannot appear twice!"
                                                   + num);
                     else
                       {
                         temp += "-";
                         negate = true;
                         i++;
-                      } // if
+                      } // if negate is true
                     break;
                   } // case -
                 case 'e':
                   {
                     if (e)
                       throw new JSONException(
-                                              "Invalid input: expect a number, given "
+                                              "Invalid input: 'e' cannot appear twice "
                                                   + num);
                     else
                       {
                         temp += "e";
                         e = true;
                         i++;
-                      } // if
+                      } // if e is true
                     break;
                   } // case e
                 case '.':
                   {
                     if (period)
                       throw new JSONException(
-                                              "Invalid input: expect a number, given "
+                                              "Invalid input: decimal point cannot appear twice"
                                                   + num);
                     else
                       {
                         temp += ".";
                         period = true;
                         i++;
-                      } // if
+                      } // if period is true
                     break;
                   } // case .
                 case '0':
@@ -334,10 +332,10 @@ public class JSON
                 default:
                   throw new JSONException("Invalid input: not a valid number");
               } // switch
-          } // for
-      } // else
+          } // while
+      } // if str.charAt(0) is a digit or '-'
     throw new JSONException("Invalid input");
-  } // parseNum(Str)
+  } // parseNum(String)
 
   /**
    * parse a string into JSONConstant
@@ -382,8 +380,8 @@ public class JSON
             default:
               throw new JSONException(
                                       "Invalid input: JSONConstant expects null, true, or false.");
-          } // switch
-      } // if
+          } // switch (ch)
+      } // if ch = 'n' or 'f' or 't'
   } // parseConstant(String)
 
 } // class JSON

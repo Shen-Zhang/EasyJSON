@@ -9,8 +9,7 @@ import java.math.BigDecimal;
  * 
  */
 public class JSONReal
-    implements
-      JSONValue
+    implements JSONValue
 {
   // +--------+----------------------------------------------------------
   // | Fields |

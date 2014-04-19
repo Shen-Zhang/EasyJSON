@@ -9,10 +9,8 @@ import java.util.ArrayList;
  * 
  */
 public class JSONArray
-    implements
-      JSONValue
+    implements JSONValue
 {
-
   // +--------+----------------------------------------------------------
   // | Fields |
   // +--------+

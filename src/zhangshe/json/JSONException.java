@@ -13,8 +13,7 @@ package zhangshe.json;
 
 @SuppressWarnings("serial")
 public class JSONException
-    extends
-      Exception
+    extends Exception
 {
   // +--------+----------------------------------------------------------
   // | Fields |

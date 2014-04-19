@@ -7,8 +7,7 @@ package zhangshe.json;
  * 
  */
 public class JSONString
-    implements
-      JSONValue
+    implements JSONValue
 {
 
   // +--------+----------------------------------------------------------
