@@ -18,17 +18,14 @@ public class JSONParserEXPT
     String i = "[{}]";
     String a = "[\"Hello\",\"hello\",\"abc\",\"2312e2\"]";
     String b = "[3,\"Hello\",null]";
-    String g = "[3,\"Hello\",null,[]]";
+    String g = "[3,\"Hello\"null,[]]";
     String c =
         "{\"abc\":null,\"dsa\":3,\"ds\":[\"Hello\",\"hello\",\"abc\",\"231232\"]}";
     String d = "{\"a\":\"rebelsky\",\"b\":354,\"c\":3214,\"d\":32154}";
 
     String f = "[{\"a\":[1,23],\"b\":true},{\"c\":{\"C\":0},\"d\":10},null]";
-    JSONValue val = JSON.parse(f);
+    JSONValue val = JSON.parse(g);
     //val.print();
-    //pen.format("  " , "[");
-    //pen.flush();
-    //val.print("");
     pen.println(val.toJSONString());
 
   } // main(String[] args)

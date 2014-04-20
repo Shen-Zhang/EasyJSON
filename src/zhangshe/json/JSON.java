@@ -16,6 +16,8 @@ public class JSON
    * with '{' or '['
    */
   static boolean checkFirst = false;
+  static String parseStr = null;
+  static boolean setParseStr = false;
 
   /**
    * Parse a string. See README.md for more details.
@@ -27,8 +29,15 @@ public class JSON
   public static JSONValue parse(String str)
     throws JSONException
   {
-    if(str.length() == 0)
-      throw new JSONException("Invalid input: Expecting String, Number, null, false, true, Object or Array");
+    System.out.println(setParseStr);
+    if (!setParseStr)
+      {
+        parseStr = str;
+        setParseStr = true;
+      } // if the parseStr hasn't been set
+    if (str.length() == 0)
+      throw new JSONException(
+                              "Invalid input: Expecting String, Number, null, false, true, Object or Array");
     char ch = str.charAt(0);
 
     // check if the given string starts with '{' or '['
@@ -41,6 +50,7 @@ public class JSON
     else
       {
         checkFirst = true;
+
         switch (ch)
           {
             case '{': // JSONObject
@@ -87,9 +97,10 @@ public class JSON
     throws JSONException
   {
     if (str.charAt(0) != '{')
-      throw new JSONException(
-                              "Invalid input: JSONObject should begin with '{', given"
-                                  + str.charAt(0));
+      throw new JSONException(parseStr,
+                              "Invalid Input: Expecting a '{', given "
+                                  + str.charAt(0), 0);
+
     else if (str.charAt(1) == '}')
       {
         JSONObject empty = new JSONObject();
@@ -97,14 +108,15 @@ public class JSON
         return empty;
       } // if str.charAt(1) = }
     else if (str.charAt(1) != '"')
-      throw new JSONException(
-                              "Invalid input: The first item in JSONObject should be a string, given "
-                                  + str.charAt(1));
+      throw new JSONException(parseStr,
+                              "Invalid Input: Expecting a '\"', given "
+                                  + str.charAt(1), 1);
+
     else
       {
 
         JSONObject obj = new JSONObject(); // create a new JSONObject
-        int i = 1;
+        int i = 1; // Assume index 0 is '{'. Iteration starts from i = 1
 
         while (i < str.length())
           {
@@ -117,8 +129,9 @@ public class JSON
             JSONValue key = parse(str.substring(i)); // get a JSONString as a key
             i += key.size();
             if (str.charAt(i) != ':')
-              throw new JSONException("Invalid input: Expect ':', given"
-                                      + str.charAt(i));
+              throw new JSONException(parseStr,
+                                      "Invalid Input: Expecting a ':', given: "
+                                          + str.charAt(i), i);
             else
               {
                 i++; // ':'
@@ -135,9 +148,9 @@ public class JSON
                     return obj;
                   }
                 else
-                  throw new JSONException(
-                                          "Invalid input: Expect ',' or '}', but given "
-                                              + str.charAt(i));
+                  throw new JSONException(parseStr,
+                                          "Invalid Input: Expecting ',' or '}', given "
+                                              + str.charAt(i), i);
               } // if str.charAt(i) != }
           } // while i < str.length()
         throw new JSONException("Invalid input");
@@ -159,9 +172,8 @@ public class JSON
     throws JSONException
   {
     if (str.charAt(0) != '"')
-      throw new JSONException(
-                              "Invalid input: JSONString should begin with a double quote, given "
-                                  + str.charAt(0));
+      throw new JSONException(parseStr, "Invalid Input: Expecting '\"', given "
+                                        + str.charAt(0), 0);
     else
       {
         for (int i = 1; i < str.length(); i++)
@@ -170,7 +182,7 @@ public class JSON
               {
                 if (str.charAt(i + 1) != ',' && str.charAt(i + 1) != '}'
                     && str.charAt(i + 1) != ']' && str.charAt(i + 1) != ':')
-                  throw new JSONException("Invalid input");
+                  throw new JSONException(str, "Invalid Input", i);
                 return new JSONString(str.substring(0, i + 1));
               } // if
           } // for(i)
@@ -212,7 +224,7 @@ public class JSON
 
             arr.add(val); // add value to the array
             i = i + val.size() - 1; // increment i
-            while (i+1 < str.length())
+            while (i + 1 < str.length())
               {
                 if (str.charAt(i + 1) == ',')
                   {

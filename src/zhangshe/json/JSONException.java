@@ -42,7 +42,15 @@ public class JSONException
     super(msg);
     this.msg = msg;
   } // JSONException(String)
-  
+
+  public JSONException(String str, String msg, int index)
+  {
+    //super(msg);
+    System.out.println(str);
+    System.err.format("%" + (1 + index) + "s", "^");
+    System.err.println("\n" + msg);
+  } // JSONException(String, String, int)
+
   public JSONException(String msg, Throwable cause)
   {
     super(msg, cause);
