@@ -70,13 +70,13 @@ public class JSONString
   @Override
   public void print()
   {
-    this.print(0,0);
+    this.print(1);
   } // print()
-  
+
   @Override
-  public void print(int begin, int format)
+  public void print(int format)
   {
-    pen.format("%" + begin + "s", "");
+    pen.format("%" + format + "s", "");
     pen.print(this.str);
     pen.flush();
   } // print(String)

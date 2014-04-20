@@ -28,5 +28,5 @@ public interface JSONValue
   /**
    * Print a JSONValue with a specific number of spaces before it
    */
-  public void print(int begin, int format);
+  public void print(int format);
 } // interface JSonObject

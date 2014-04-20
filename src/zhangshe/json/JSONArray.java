@@ -96,31 +96,29 @@ public class JSONArray
   @Override
   public void print()
   {
-    this.print(1, 0);
+    this.print(1);
   } // print()
 
   @Override
-  public void print(int begin, int format)
+  public void print(int format)
   {
-
-    //format += "  ";
-    //pen.println();
-    pen.format("%" + begin + "s", "[");
+    pen.format("%" + format + "s", "");
+    pen.print("[");
     if (array.size() == 0)
       pen.print("]");
     else
       {
         pen.println();
         int i = 0;
-        int newBegin = begin + 2;
         for (i = 0; i < array.size() - 1; i++)
           {
-            array.get(i).print(newBegin, format+2);
+            array.get(i).print(format + 3);
             pen.println(",");
           } // for (i)
-        array.get(i).print(newBegin, format+2);
+        array.get(i).print(format + 3);
         pen.println();
-        pen.format("%" + begin + "s", "]");
+        pen.format("%" + format + "s", "");
+        pen.print("]");
         pen.flush();
       } // if array.size() != 0
   } // print(int)

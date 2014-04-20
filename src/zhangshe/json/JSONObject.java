@@ -94,13 +94,14 @@ public class JSONObject
   @Override
   public void print()
   {
-    this.print(1,0);
+    this.print(1);
   } // print()
 
   @Override
-  public void print(int begin, int format)
+  public void print(int format)
   {
-    pen.format("%" + begin + "s", "{");
+    pen.format("%" + format + "s", "");
+    pen.print("{");
 
     Enumeration<JSONValue> keys = hash.keys(); // get all keys in the HashTable
     if (!keys.hasMoreElements())
@@ -113,15 +114,16 @@ public class JSONObject
       {
         pen.println();
         JSONValue temp = keys.nextElement();
-        temp.print(begin+2, format);
+        temp.print(format + 2);
         pen.print(":");
         pen.flush();
-        hash.get(temp).print(format,0);
+        hash.get(temp).print(format+1);
         if (keys.hasMoreElements())
           pen.print(",");
       } // for(i)
     pen.println();
-    pen.format("%" + (format + 1) + "s", "}");
+    pen.format("%" + format + "s", "");
+    pen.print("}");
     pen.flush();
   } // print(String)
 } // class JSONObject

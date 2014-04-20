@@ -27,6 +27,8 @@ public class JSON
   public static JSONValue parse(String str)
     throws JSONException
   {
+    if(str.length() == 0)
+      throw new JSONException("Invalid input: Expecting String, Number, null, false, true, Object or Array");
     char ch = str.charAt(0);
 
     // check if the given string starts with '{' or '['
