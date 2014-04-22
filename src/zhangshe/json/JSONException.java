@@ -43,12 +43,12 @@ public class JSONException
     this.msg = msg;
   } // JSONException(String)
 
-  public JSONException(String str, String msg, int index)
+  public JSONException(String str, String expected, int index)
   {
     //super(msg);
     System.out.println(str);
     System.err.format("%" + (1 + index) + "s", "^");
-    System.err.println("\n" + msg);
+    System.err.println("\n" + "Invalid input: Expecting " + expected);
   } // JSONException(String, String, int)
 
   public JSONException(String msg, Throwable cause)
