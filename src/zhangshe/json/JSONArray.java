@@ -122,4 +122,4 @@ public class JSONArray
         pen.flush();
       } // if array.size() != 0
   } // print(int)
-} // class JSONParser
+} // class JSONArray
