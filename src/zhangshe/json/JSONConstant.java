@@ -28,6 +28,10 @@ public class JSONConstant
    */
   int length;
 
+  public static JSONConstant TRUE = new JSONConstant("true");
+  public static JSONConstant FALSE = new JSONConstant("false");
+  public static JSONConstant NULL = new JSONConstant("NULL");
+
   // +-------------+----------------------------------------------------------
   // | Constructor |
   // +-------------+
@@ -66,18 +70,18 @@ public class JSONConstant
     return length;
   } // size()
 
-  @Override 
+  @Override
   public void print()
   {
     this.print(1);
   } // print(int)
-  
+
   @Override
   public void print(int format)
   {
     pen.format("%" + format + "s", "");
     pen.print(this.constant);
-    
+
     pen.flush();
   } // print(String)
 } // class JSONConstant
