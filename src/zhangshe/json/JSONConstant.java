@@ -30,7 +30,7 @@ public class JSONConstant
 
   public static JSONConstant TRUE = new JSONConstant("true");
   public static JSONConstant FALSE = new JSONConstant("false");
-  public static JSONConstant NULL = new JSONConstant("NULL");
+  public static JSONConstant NULL = new JSONConstant("null");
 
   // +-------------+----------------------------------------------------------
   // | Constructor |
@@ -70,18 +70,37 @@ public class JSONConstant
     return length;
   } // size()
 
+  /**
+   * Print the content of this
+   */
   @Override
   public void print()
   {
     this.print(1);
   } // print(int)
 
+  /**
+   * Print the content of this. Format the result with given number of spaces
+   */
   @Override
   public void print(int format)
   {
     pen.format("%" + format + "s", "");
     pen.print(this.constant);
-
     pen.flush();
   } // print(String)
+
+  /**
+   * To check if the given constant equals to this
+   * 
+   * @param constant
+   *    A JSONConstant
+   * @return
+   *    true, if equal, vice versa
+   */
+  public boolean isEqual(JSONConstant constant)
+  {
+    return this.constant.equals(constant.constant);
+  } // isEqual(JSONConstant)
+
 } // class JSONConstant

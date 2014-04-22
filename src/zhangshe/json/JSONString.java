@@ -23,7 +23,7 @@ public class JSONString
    */
   String str;
   /**
-   * Store the lenght of the string
+   * Store the length of the string, including the quotation marks
    */
   int length = 0;
 
@@ -67,15 +67,23 @@ public class JSONString
     return this.length;
   } // size()
 
+  /**
+   * print the content in the JSONString
+   */
   @Override
   public void print()
   {
+    // print the array with format = 1
     this.print(1);
   } // print()
 
+  /**
+   * print the content in the JSONString, format the result with given number of spaces
+   */
   @Override
   public void print(int format)
   {
+    // format and print the string
     pen.format("%" + format + "s", "");
     pen.print(this.str);
     pen.flush();

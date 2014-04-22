@@ -105,7 +105,6 @@ public class JSONObject
     return this.hash.get(key);
   } // get(JSONValue)
 
-
   /**
    * print the content in the JSONObject
    */
@@ -117,7 +116,7 @@ public class JSONObject
   } // print()
 
   /**
-   * print the content in the JSONObject, format the result by given spaces
+   * print the content in the JSONObject, format the result with given number of spaces
    */
   @Override
   public void print(int format)
@@ -133,26 +132,27 @@ public class JSONObject
       {
         pen.print("}");
         pen.flush();
-        return;
       } // if keys have no more elements
-
-    // otherwise, print all keys and values in the JSONObject
-    while (keys.hasMoreElements())
+    else
       {
-        pen.println();
-        JSONValue temp = keys.nextElement();
-        temp.print(format + 2);
-        pen.print(":");
-        pen.flush();
-        hash.get(temp).print(format + 1);
-        if (keys.hasMoreElements())
-          pen.print(",");
-      } // for(i)
+        // otherwise, print all keys and values in the JSONObject
+        while (keys.hasMoreElements())
+          {
+            pen.println();
+            JSONValue temp = keys.nextElement();
+            temp.print(format + 2);
+            pen.print(":");
+            pen.flush();
+            hash.get(temp).print(format + 1);
+            if (keys.hasMoreElements())
+              pen.print(",");
+          } // for(i)
 
-    // start a new line and put the closed bracket
-    pen.println();
-    pen.format("%" + format + "s", "");
-    pen.print("}");
-    pen.flush();
+        // start a new line and put the closed bracket
+        pen.println();
+        pen.format("%" + format + "s", "");
+        pen.print("}");
+        pen.flush();
+      } // if keys.hasMoreElments()
   } // print(String)
 } // class JSONObject

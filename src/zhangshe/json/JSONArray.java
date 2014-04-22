@@ -93,30 +93,43 @@ public class JSONArray
     return length;
   } // size()
 
+  /**
+   * print the content in the JSONArray
+   */
   @Override
   public void print()
   {
+    // print the array with format = 1
     this.print(1);
   } // print()
 
+  /**
+   * print the content in the JSONArray, format the result with given number of spaces
+   */
   @Override
   public void print(int format)
   {
+    // format and print the open brackets
     pen.format("%" + format + "s", "");
     pen.print("[");
+    // if the array is empty, then print the closed brackets and return
     if (array.size() == 0)
       pen.print("]");
+    // if the array is not empty, start a new line, print all values stored in the array
     else
       {
         pen.println();
         int i = 0;
         for (i = 0; i < array.size() - 1; i++)
           {
+            // in order to have a better indentation, values are printed with 3 more spaces than the brackets
             array.get(i).print(format + 3);
             pen.println(",");
           } // for (i)
+        // print the last element in the array
         array.get(i).print(format + 3);
         pen.println();
+        // format and print the closed brackets
         pen.format("%" + format + "s", "");
         pen.print("]");
         pen.flush();

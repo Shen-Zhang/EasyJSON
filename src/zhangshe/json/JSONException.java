@@ -1,7 +1,7 @@
 package zhangshe.json;
 
 /**
- * Citation: Use the method in the following website as a referrence.
+ * Citation: Use the method in the following web site as a reference.
  * http://stackoverflow
  * .com/questions/1754315/how-to-create-our-own-exceptions-in-java
  * 
@@ -15,10 +15,6 @@ package zhangshe.json;
 public class JSONException
     extends Exception
 {
-  // +--------+----------------------------------------------------------
-  // | Fields |
-  // +--------+
-  String msg = null;
 
   // +--------------+----------------------------------------------------------
   // | Constructors |
@@ -34,18 +30,10 @@ public class JSONException
   public JSONException(String msg)
   {
     super(msg);
-    this.msg = msg;
-  } // JSONException(String)
-
-  public JSONException(String msg, int index)
-  {
-    super(msg);
-    this.msg = msg;
   } // JSONException(String)
 
   public JSONException(String str, String expected, int index)
   {
-    //super(msg);
     System.out.println(str);
     System.err.format("%" + (1 + index) + "s", "^");
     System.err.println("\n" + "Invalid input: Expecting " + expected);

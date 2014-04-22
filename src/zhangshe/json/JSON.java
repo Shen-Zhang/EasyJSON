@@ -349,11 +349,11 @@ public class JSON
     switch (ch)
       {
         case 'n':
-          constantHelper(str.substring(0, 4), JSONConstant.NULL);
+          return constantHelper(str.substring(0, 4), JSONConstant.NULL);
         case 'f':
-          constantHelper(str.substring(0, 5), JSONConstant.FALSE);
+          return constantHelper(str.substring(0, 5), JSONConstant.FALSE);
         case 't':
-          constantHelper(str.substring(0, 4), JSONConstant.TRUE);
+          return constantHelper(str.substring(0, 4), JSONConstant.TRUE);
         default:
           throw new JSONException(
                                   "Invalid input: JSONConstant expects null, true, or false.");
@@ -363,18 +363,18 @@ public class JSON
   /**
    * A helper to help building JSONConstant or throwing exception
    * @param str
-   * A valid String
+   *    A valid String
    * @param constant
-   * A JSONConstant
+   *    A JSONConstant
    * @return
-   * A JSONConstant if the str is null/false/true
+   *    A JSONConstant if the str is null/false/true
    * @throws JSONException
    */
   public static JSONConstant constantHelper(String str, JSONConstant constant)
     throws JSONException
   {
     JSONConstant temp = new JSONConstant(str);
-    if (temp == JSONConstant.NULL)
+    if (temp.isEqual(constant))
       return temp;
     else
       throw new JSONException(
