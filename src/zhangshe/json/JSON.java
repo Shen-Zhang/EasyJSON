@@ -5,6 +5,7 @@ package zhangshe.json;
  * 
  * @author Shen Zhang
  */
+
 public class JSON
 {
   // +--------+----------------------------------------------------------
@@ -13,11 +14,9 @@ public class JSON
 
   /**
    * A boolean flag to check if the first character in the given string begins
-   * with '{' or '['
+   * with '{' or '['. 
    */
   static boolean checkFirst = false;
-  static String parseStr = null;
-  static boolean setParseStr = false;
 
   /**
    * Parse a string. See README.md for more details.
@@ -29,56 +28,51 @@ public class JSON
   public static JSONValue parse(String str)
     throws JSONException
   {
-    System.out.println(setParseStr);
-    if (!setParseStr)
-      {
-        parseStr = str;
-        setParseStr = true;
-      } // if the parseStr hasn't been set
     if (str.length() == 0)
-      throw new JSONException(
-                              "Invalid input: Expecting String, Number, null, false, true, Object or Array");
+      throw new JSONException("Invalid Input: Expecting Object or Array");
+
     char ch = str.charAt(0);
 
     // check if the given string starts with '{' or '['
     if (!checkFirst && ch != '{' && ch != '[')
       {
-        throw new JSONException(
-                                "Invalid input: The string should begins with '{' or '[, given "
-                                    + ch);
+        throw new JSONException();
       }
     else
       {
+        // The first character is '[' or '{', which means the sting begins with an object or array.
+        // Set checkFirst to true, and we don't need to use this boolean anymore.
         checkFirst = true;
 
-        switch (ch)
+        // pass str to parseNum if ch is a digit, or negative sign      
+        if (Character.isDigit(ch) || ch == '-')
+          return parseNum(str);
+        else
           {
-            case '{': // JSONObject
-              return parseObj(str);
-            case '[': // JSONArray
-              return parseArr(str);
-            case '"': // JSONString
-              return parseStr(str);
-            case 'n': // JSONConstant
-            case 'f':// JSONConstant
-            case 't':
-              return parseConstant(str);
-              // JSONReal
-            case '-':
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9':
-              return parseNum(str);
-            default:
-              throw new JSONException("Invalid input");
-          } // switch(ch)
+            switch (ch)
+              {
+              // JSONObject
+                case '{':
+                  return parseObj(str);
+                  // JSONArray
+                case '[':
+                  return parseArr(str);
+                  // JSONString
+                case '"':
+                  return parseStr(str);
+                  // JSONConstant
+                case 'n':
+                case 'f':
+                case 't':
+                  return parseConstant(str);
+
+                  // Any other characters are invalid input
+                default:
+                  throw new JSONException(str,
+                                          "Number, Object, Array, or Constnat",
+                                          0);
+              } // switch(ch)
+          } // if ch is not a digit or negative sign
       } // if
   }// parse(String str)
 
@@ -96,61 +90,67 @@ public class JSON
   public static JSONObject parseObj(String str)
     throws JSONException
   {
-    if (str.charAt(0) != '{')
-      throw new JSONException(parseStr,
-                              "Invalid Input: Expecting a '{', given "
-                                  + str.charAt(0), 0);
 
-    else if (str.charAt(1) == '}')
+    // Assume str.charAt(0) is '{', if str.charAt(1) is '}'
+    // return an empty JSONObject
+    if (str.charAt(1) == '}')
       {
         JSONObject empty = new JSONObject();
         empty.length++;
         return empty;
       } // if str.charAt(1) = }
+
+    // Or if str.charAt(1) is not a '"', throw an exception
     else if (str.charAt(1) != '"')
-      throw new JSONException(parseStr,
-                              "Invalid Input: Expecting a '\"', given "
-                                  + str.charAt(1), 1);
+      throw new JSONException(str, "\"", 1);
 
     else
       {
-
-        JSONObject obj = new JSONObject(); // create a new JSONObject
-        int i = 1; // Assume index 0 is '{'. Iteration starts from i = 1
+        // create a new JSONObject
+        JSONObject obj = new JSONObject();
+        // Assume index 0 is '{'. Iteration starts from i = 1
+        int i = 1;
 
         while (i < str.length())
           {
-            if (str.charAt(i) == '}') // hit the end of an JSONObject
+            // hit the end of an JSONObject
+            if (str.charAt(i) == '}')
               {
                 obj.length = i;
                 i++;
                 return obj;
               } // if str.charAt(i) = }
-            JSONValue key = parse(str.substring(i)); // get a JSONString as a key
+
+            // Get a JSONString as the key
+            JSONString key = parseStr(str.substring(i));
+            // skup over key
             i += key.size();
+
             if (str.charAt(i) != ':')
-              throw new JSONException(parseStr,
-                                      "Invalid Input: Expecting a ':', given: "
-                                          + str.charAt(i), i);
+              throw new JSONException(str, ":", i);
             else
               {
-                i++; // ':'
-                JSONValue val = parse(str.substring(i));
+                i++; // skip ':'
                 // get a JSONValue as a val
-                obj.add(key, val); // add a pair
-                i += val.size(); // increment i by the size of val
-                if (str.charAt(i) == ',') // JSONObject has more pairs
+                JSONValue val = parse(str.substring(i));
+                // add a pair to the object
+                obj.add(key, val);
+
+                // skip over val
+                i += val.size();
+                // if JSONObject has more pairs
+                if (str.charAt(i) == ',')
+                  // skip over the comma
                   i++;
-                else if (str.charAt(i) == '}') // hit the end of the JSONObject
+                // if we hit the end of the JSONObject
+                else if (str.charAt(i) == '}')
                   {
                     obj.length = i + 1;
                     i++;
                     return obj;
-                  }
+                  } // if str.charAt(i) = '}'
                 else
-                  throw new JSONException(parseStr,
-                                          "Invalid Input: Expecting ',' or '}', given "
-                                              + str.charAt(i), i);
+                  throw new JSONException(str, "',' or '}'", i);
               } // if str.charAt(i) != }
           } // while i < str.length()
         throw new JSONException("Invalid input");
@@ -171,24 +171,17 @@ public class JSON
   public static JSONString parseStr(String str)
     throws JSONException
   {
-    if (str.charAt(0) != '"')
-      throw new JSONException(parseStr, "Invalid Input: Expecting '\"', given "
-                                        + str.charAt(0), 0);
-    else
+    for (int i = 1; i < str.length(); i++)
       {
-        for (int i = 1; i < str.length(); i++)
+        if (str.charAt(i) == '"')
           {
-            if (str.charAt(i) == '"')
-              {
-                if (str.charAt(i + 1) != ',' && str.charAt(i + 1) != '}'
-                    && str.charAt(i + 1) != ']' && str.charAt(i + 1) != ':')
-                  throw new JSONException(str, "Invalid Input", i);
-                return new JSONString(str.substring(0, i + 1));
-              } // if
-          } // for(i)
-        throw new JSONException(
-                                "Invalid input: JSONString should end with a double quotation mark");
-      } // if str.charAt(0) = "
+            if (str.charAt(i + 1) != ',' && str.charAt(i + 1) != '}'
+                && str.charAt(i + 1) != ']' && str.charAt(i + 1) != ':')
+              throw new JSONException(str, "Invalid Input", i);
+            return new JSONString(str.substring(0, i + 1));
+          } // if
+      } // for(i)
+    throw new JSONException();
   } // parseStr(String)
 
   /**
@@ -206,44 +199,43 @@ public class JSON
   public static JSONArray parseArr(String str)
     throws JSONException
   {
-    if (str.charAt(0) != '[')
-      throw new JSONException("Invalid input: JSONArray should begin with '['");
-    else
+    // create a JSONAray 
+    JSONArray arr = new JSONArray();
+
+    for (int i = 1; i < str.length(); i++)
       {
-        JSONArray arr = new JSONArray(); // create a JSONAray
-
-        for (int i = 1; i < str.length(); i++)
+        // hit the end of the array
+        if (str.charAt(i) == ']')
           {
-            if (str.charAt(i) == ']')
-              {
-                arr.length = i + 1;
-                i++;
-                return arr;
-              } // hit the end of the array
-            JSONValue val = parse(str.substring(i));
+            arr.length = i + 1;
+            i++;
+            return arr;
+          } // if str.charAt(i) = ']'
 
-            arr.add(val); // add value to the array
-            i = i + val.size() - 1; // increment i
-            while (i + 1 < str.length())
+        // parse the next JSONValue and add it to the array
+        JSONValue val = parse(str.substring(i));
+        arr.add(val);
+        // skip over val
+        i = i + val.size() - 1;
+        while (i + 1 < str.length())
+          {
+            if (str.charAt(i + 1) == ',')
               {
-                if (str.charAt(i + 1) == ',')
-                  {
-                    i++;
-                    JSONValue temp = parse(str.substring(i + 1));
-                    arr.add(temp);
-                    i += temp.size();
-                  } // if str.charAt(i+1) is ','
-                if (str.charAt(i + 1) == ']')
-                  {
-                    arr.length = i + 2;
-                    return arr;
-                  } // if str.charAt(i+1) is ']'
-                // else
-              } // if i+1 < str.length()
-          } // for(i)
-      } // if str.charAt(0) = [
+                i++;
+                JSONValue temp = parse(str.substring(i + 1));
+                arr.add(temp);
+                i += temp.size();
+              } // if str.charAt(i+1) is ','
+            if (str.charAt(i + 1) == ']')
+              {
+                arr.length = i + 2;
+                return arr;
+              } // if str.charAt(i+1) is ']'
+            // else
+          } // if i+1 < str.length()
+      } // for(i)
     throw new JSONException("Invalid input");
-  } // parseArr(String)
+  }// parseArr(String)
 
   /**
    * Parse a string into JSONReal
@@ -259,101 +251,84 @@ public class JSON
   public static JSONReal parseNum(String str)
     throws JSONException
   {
-    /**
-     * A boolean flag to check if the period exists in the string
-     */
-    boolean period = false;
-    /**
-     * A boolean flag to check if the negative sign exists in the string
-     */
-    boolean negate = false;
-    /**
-     * A boolean flag to check if e exists in the string
-     */
-    boolean e = false;
+
+    boolean period = false; // Have we encountered a period?
+    boolean negate = false; // Did we began with a negative sign?
+    boolean e = false; //  Did we see the exponent character ('e')?
 
     if (!Character.isDigit(str.charAt(0)) && str.charAt(0) != '-')
       {
         throw new JSONException(
-                                "Invalid input: JSONReal should begin with a digit");
+                                "Invalid Input: Expecting a number or negative sign");
       } // if
     else
       {
-        String temp = ""; // create a string
         int i = 0;
         while (i < str.length())
           {
             char num = str.charAt(i);
-            switch (num)
+            if (Character.isDigit(num))
+              i++; // skip the number
+            else
               {
-                case ',':
-                case '}':
-                case ']':
-                  return new JSONReal(temp); // hit the end of a number
-                case '-':
+                switch (num)
                   {
-                    if (negate)
+                  // hit the end of a number
+                    case ',':
+                    case '}':
+                    case ']':
+                      // the last character should be a digit
+                      if (!Character.isDigit(str.charAt(i - 1)))
+                        throw new JSONException(str, "a number", i - 1);
+                      return new JSONReal(str.substring(0, i));
+                    case '-':
+                      if (negate)
+                        throw new JSONException(
+                                                "Invalid Input: Negative sign cannot appear twice!"
+                                                    + num);
+                      else
+                        {
+                          negate = true;
+                          i++; // skip '-'
+                        } // if negate is true
+                      break;
+                    case 'E':
+                    case 'e':
+                      if (e)
+                        throw new JSONException(
+                                                "Invalid Input: 'e' cannot appear twice "
+                                                    + num);
+                      else
+                        {
+                          e = true;
+                          // Allow positive or negative sign immediately after 'e'/'E'
+                          if (i + 1 < str.length()
+                              && (str.charAt(i + 1) == '+' || str.charAt(i + 1) == '-'))
+                            i++; // skip '+'/'-'
+                          i++; // skip 'e'/'E'
+                        } // if e is true
+                      break;
+                    case '.':
+                      if (period)
+                        throw new JSONException(
+                                                "Invalid Input: decimal point cannot appear twice"
+                                                    + num);
+                      else
+                        {
+                          period = true;
+                          i++; // skip '.'
+                        } // if period is true
+                      break;
+
+                    default:
                       throw new JSONException(
-                                              "Invalid input: Negative sign cannot appear twice!"
-                                                  + num);
-                    else
-                      {
-                        temp += "-";
-                        negate = true;
-                        i++;
-                      } // if negate is true
-                    break;
-                  } // case -
-                case 'E':
-                case 'e':
-                  {
-                    if (e)
-                      throw new JSONException(
-                                              "Invalid input: 'e' cannot appear twice "
-                                                  + num);
-                    else
-                      {
-                        temp += "e";
-                        e = true;
-                        i++;
-                      } // if e is true
-                    break;
-                  } // case e
-                case '.':
-                  {
-                    if (period)
-                      throw new JSONException(
-                                              "Invalid input: decimal point cannot appear twice"
-                                                  + num);
-                    else
-                      {
-                        temp += ".";
-                        period = true;
-                        i++;
-                      } // if period is true
-                    break;
-                  } // case .
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                  {
-                    i++;
-                    temp += Character.toString(num);
-                    break;
-                  } // case 0 1 2 3 4 5 6 7 8 9
-                default:
-                  throw new JSONException("Invalid input: not a valid number");
-              } // switch
+                                              "Invalid input: not a valid number");
+
+                  } // switch
+              } // else
           } // while
+        throw new JSONException("Invalid input");
       } // if str.charAt(0) is a digit or '-'
-    throw new JSONException("Invalid input");
   } // parseNum(String)
 
   /**
@@ -371,36 +346,39 @@ public class JSON
     throws JSONException
   {
     char ch = str.charAt(0);
-    if (ch != 'n' && ch != 'f' && ch != 't')
+    switch (ch)
+      {
+        case 'n':
+          constantHelper(str.substring(0, 4), JSONConstant.NULL);
+        case 'f':
+          constantHelper(str.substring(0, 5), JSONConstant.FALSE);
+        case 't':
+          constantHelper(str.substring(0, 4), JSONConstant.TRUE);
+        default:
+          throw new JSONException(
+                                  "Invalid input: JSONConstant expects null, true, or false.");
+      } // switch (ch)
+  } // parseConstant(String)
+
+  /**
+   * A helper to help building JSONConstant or throwing exception
+   * @param str
+   * A valid String
+   * @param constant
+   * A JSONConstant
+   * @return
+   * A JSONConstant if the str is null/false/true
+   * @throws JSONException
+   */
+  public static JSONConstant constantHelper(String str, JSONConstant constant)
+    throws JSONException
+  {
+    JSONConstant temp = new JSONConstant(str);
+    if (temp == JSONConstant.NULL)
+      return temp;
+    else
       throw new JSONException(
                               "Invalid input: JSONConstant expects null, true, or false.");
-    else
-      {
-        switch (ch)
-          {
-            case 'n':
-              if (str.substring(0, 4).compareTo("null") != 0)
-                throw new JSONException(
-                                        "Invalid input: JSONConstant expects null, true, or false.");
-              else
-                return new JSONConstant("null");
-            case 'f':
-              if (str.substring(0, 5).compareTo("false") != 0)
-                throw new JSONException(
-                                        "Invalid input: JSONConstant expects null, true, or false.");
-              else
-                return new JSONConstant("false");
-            case 't':
-              if (str.substring(0, 4).compareTo("true") != 0)
-                throw new JSONException(
-                                        "Invalid input: JSONConstant expects null, true, or false.");
-              else
-                return new JSONConstant("true");
-            default:
-              throw new JSONException(
-                                      "Invalid input: JSONConstant expects null, true, or false.");
-          } // switch (ch)
-      } // if ch = 'n' or 'f' or 't'
-  } // parseConstant(String)
+  } // constantHelper(String)
 
 } // class JSON
