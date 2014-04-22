@@ -11,6 +11,7 @@ public class JSONObject
    * A PrintWriter for print()
    */
   static PrintWriter pen = new PrintWriter(System.out, true);
+
   // +--------+----------------------------------------------------------
   // | Fields |
   // +--------+
@@ -20,7 +21,7 @@ public class JSONObject
   Hashtable<JSONValue, JSONValue> hash;
 
   /**
-   * The size of this JSONObject
+   * Store the number of characters in the JSONObject, including the open and closed brackets.
    */
   int length = 0;
 
@@ -39,6 +40,7 @@ public class JSONObject
   // +---------+----------------------------------------------------------
   // | Methods |
   // +---------+
+
   /**
    * Add paris into JSONObject
    * 
@@ -91,25 +93,50 @@ public class JSONObject
     return length;
   } // size()
 
+  /**
+   * Get the value in the Object by key
+   * 
+   * @param key
+   * @return 
+   * The value paired with the given key
+   */
+  public JSONValue get(JSONValue key)
+  {
+    return this.hash.get(key);
+  } // get(JSONValue)
+
+
+  /**
+   * print the content in the JSONObject
+   */
   @Override
   public void print()
   {
+    // print the object with format = 1
     this.print(1);
   } // print()
 
+  /**
+   * print the content in the JSONObject, format the result by given spaces
+   */
   @Override
   public void print(int format)
   {
+    // format and print the open bracket
     pen.format("%" + format + "s", "");
     pen.print("{");
 
-    Enumeration<JSONValue> keys = hash.keys(); // get all keys in the HashTable
+    // get all keys in the HashTable
+    Enumeration<JSONValue> keys = hash.keys();
+    // if the Object is empty, print the closed bracket and return
     if (!keys.hasMoreElements())
       {
         pen.print("}");
         pen.flush();
         return;
       } // if keys have no more elements
+
+    // otherwise, print all keys and values in the JSONObject
     while (keys.hasMoreElements())
       {
         pen.println();
@@ -117,10 +144,12 @@ public class JSONObject
         temp.print(format + 2);
         pen.print(":");
         pen.flush();
-        hash.get(temp).print(format+1);
+        hash.get(temp).print(format + 1);
         if (keys.hasMoreElements())
           pen.print(",");
       } // for(i)
+
+    // start a new line and put the closed bracket
     pen.println();
     pen.format("%" + format + "s", "");
     pen.print("}");
