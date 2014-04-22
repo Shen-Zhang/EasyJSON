@@ -4,6 +4,12 @@ import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+/**
+ *  A JSON representation of array
+ * @author Shen Zhang
+ *
+ * Read
+ */
 public class JSONObject
     implements JSONValue
 {
@@ -33,8 +39,10 @@ public class JSONObject
    */
   public JSONObject()
   {
+    // create a hash table to store keys and values
     this.hash = new Hashtable<JSONValue, JSONValue>();
-    length++; // '{';
+    // set length to 2, which stands for the '{' and '}'
+    this.length = 2;
   } // JSONObject()
 
   // +---------+----------------------------------------------------------
@@ -54,8 +62,12 @@ public class JSONObject
    */
   public void add(JSONValue key, JSONValue value)
   {
+    // add a pair of key and value into the hash table
     this.hash.put(key, value);
-    length += (key.size() + value.size() + 1); // ':'
+
+    // increment length by the size of key, the size of value
+    // and the size of colon, which is one
+    length += (key.size() + value.size() + 1);
   } // add(String, JSONValue)
 
   /**
@@ -67,8 +79,11 @@ public class JSONObject
   @Override
   public String toJSONString()
   {
+    // initialize the string to "{"
+    String str = "{";
 
-    String str = "{"; // initialize the string
+    StringBuilder builder = new StringBuilder();
+
     Enumeration<JSONValue> keys = hash.keys(); // get all keys in the HashTable
 
     while (keys.hasMoreElements())

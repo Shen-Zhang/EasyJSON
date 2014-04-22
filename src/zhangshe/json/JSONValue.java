@@ -14,9 +14,10 @@ public interface JSONValue
   public String toJSONString();
 
   /**
-   * Get the size of the JSONValue
+   * Get the length of a JSONValue, including the quotation marks and
+   * open/closed brackets if the JSONValue is an Object, Array or String
    * 
-   * @return An integer, the size of the JSONValue
+   * @return An integer which stores the value of length of the JSONValue.
    */
   public int size();
 
@@ -26,7 +27,7 @@ public interface JSONValue
   public void print();
 
   /**
-   * Print a JSONValue with a specific number of spaces before it
+   * Print a JSONValue. The result is formatted by the given number of spaces
    */
   public void print(int format);
 } // interface JSonObject
