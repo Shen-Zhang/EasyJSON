@@ -39,7 +39,9 @@ public class JSONString
   public JSONString(String str)
   {
     this.str = str;
+    // set this.length to the length of str. 
     this.length = str.length();
+    System.out.println("this.length:" + this.length);
   } // JSONString(String)
 
   // +---------+----------------------------------------------------------
@@ -51,7 +53,7 @@ public class JSONString
    * @post A string is given
    */
   @Override
-  public String toJSONString()
+  public String toString()
   {
     return this.str;
   } // toJSONString()

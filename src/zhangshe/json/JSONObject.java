@@ -77,7 +77,7 @@ public class JSONObject
    * @post a String is given
    */
   @Override
-  public String toJSONString()
+  public String toString()
   {
     // initialize the string to "{"
     String str = "{";
@@ -89,7 +89,7 @@ public class JSONObject
     while (keys.hasMoreElements())
       {
         JSONValue temp = keys.nextElement();
-        str += temp.toJSONString() + ":" + hash.get(temp).toJSONString();
+        str += temp.toString() + ":" + hash.get(temp).toString();
         if (keys.hasMoreElements())
           str += ",";
       } // for(i)
@@ -155,10 +155,10 @@ public class JSONObject
           {
             pen.println();
             JSONValue temp = keys.nextElement();
-            temp.print(format + 2);
+            temp.print(format + 1);
             pen.print(":");
             pen.flush();
-            hash.get(temp).print(format + 1);
+            hash.get(temp).print(format);
             if (keys.hasMoreElements())
               pen.print(",");
           } // for(i)

@@ -55,7 +55,7 @@ public class JSONConstant
    * @post A string is given
    */
   @Override
-  public String toJSONString()
+  public String toString()
   {
     return this.constant;
   } // toJSONString()

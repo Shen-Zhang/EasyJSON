@@ -39,8 +39,10 @@ public class JSONArray
    */
   public JSONArray()
   {
+    // create an arraylist to store values
     this.array = new ArrayList<JSONValue>();
-    length++; // '['
+    // set length to 2, which stands for '[' and ']'
+    length = 2;
   } // JSONArray()
 
   // +---------+----------------------------------------------------------
@@ -68,7 +70,7 @@ public class JSONArray
    * @post A string is given
    */
   @Override
-  public String toJSONString()
+  public String toString()
   {
     String str = "[";
     int i = 0;
@@ -76,9 +78,9 @@ public class JSONArray
       return str + "]";
     for (i = 0; i < array.size() - 1; i++)
       {
-        str += array.get(i).toJSONString() + ",";
+        str += array.get(i).toString() + ",";
       } // for(i)
-    str += array.get(i).toJSONString() + "]";
+    str += array.get(i).toString() + "]";
     return str;
   } // toJSONString()
 
@@ -135,4 +137,20 @@ public class JSONArray
         pen.flush();
       } // if array.size() != 0
   } // print(int)
+
+  /**
+   * Get a 
+   * @param index
+   * @return
+   */
+  public JSONValue get(int index)
+  {
+    return this.get(index);
+  } // get(int)
+  
+  public void set(int index, JSONValue val)
+  {
+    this.array.set(index, val);
+  } // set
+
 } // class JSONArray

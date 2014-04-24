@@ -9,9 +9,9 @@ package zhangshe.json;
 public interface JSONValue
 {
   /**
-   * Convert back to a JSON string.
+   * Convert a JSONValue back to a string.
    */
-  public String toJSONString();
+  public String toString();
 
   /**
    * Get the length of a JSONValue, including the quotation marks and

@@ -52,7 +52,7 @@ public class JSONReal
    * @post A string is given
    */
   @Override
-  public String toJSONString()
+  public String toString()
   {
     return this.real.toString();
   } // toJSONString()
