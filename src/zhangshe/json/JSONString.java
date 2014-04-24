@@ -41,7 +41,6 @@ public class JSONString
     this.str = str;
     // set this.length to the length of str. 
     this.length = str.length();
-    System.out.println("this.length:" + this.length);
   } // JSONString(String)
 
   // +---------+----------------------------------------------------------
