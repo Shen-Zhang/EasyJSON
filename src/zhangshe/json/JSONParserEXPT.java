@@ -17,7 +17,7 @@ public class JSONParserEXPT
   {
     PrintWriter pen = new PrintWriter(System.out, true);
     String i = "[[[[[[]]]]]]";
-    String a = "[\"\\tdsads333\",\"hello\",\"abc\",\"2312e2\"]";
+    String a = "[\"\\\\dsads333\",\"hello\",\"abc\",\"2312e2\"]";
     String b = "[3,\"Hello\",null]";
     String g = "[3,\"Hello\",null,[]]";
     String c =
@@ -25,7 +25,7 @@ public class JSONParserEXPT
     String d = "{\"a\":\"rebelsky\",\"b\":354,\"c\":3214,\"d\":32154}";
 
     String f = "[{\"a\":[1,23],\"b\":true},{\"c\":{\"C\":0},\"d\":10},null]";
-    JSONValue val = JSON.parse(f);
+    JSONValue val = JSON.parse(a);
     val.print();
     //pen.println(val.toString());
 

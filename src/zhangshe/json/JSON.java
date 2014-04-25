@@ -19,7 +19,7 @@ public class JSON
   static boolean checkFirst = false;
 
   /**
-   * Parse a string. See README.md for more details.
+   * Parse a string into JSON
    * 
    * @throws JSONException
    * @throws IOException 
@@ -176,54 +176,97 @@ public class JSON
       {
         int i = 1;
         char ch = 0;
+        int count = 0;
+        StringBuilder builder = new StringBuilder();
         while (i < str.length() && (ch = str.charAt(i)) != '"')
           {
             if (ch != '\\')
               {
+                builder.append(ch);
                 i++;
               } // if ch is not backslash
             else
               {
                 // ch is a backslash
                 ch = str.charAt(++i);
-
                 switch (ch)
                   {
-                  // skip special characters:
+
+                  // special characters cases:
                     case '"':
+                      i++;
+                      builder.append('\"');
+                      count++;
+                      break;
                     case '\\':
                     case '/':
+                      i++;
+                      builder.append(ch);
+                      count++;
+                      break;
                     case 'b':
+                      i++;
+                      builder.append('\b');
+                      count++;
+                      break;
                     case 'f':
+                      i++;
+                      builder.append('\f');
+                      count++;
+                      break;
                     case 'n':
+                      i++;
+                      builder.append('\n');
+                      count++;
+                      break;
                     case 'r':
+                      i++;
+                      builder.append('\r');
+                      count++;
+                      break;
                     case 't':
                       i++;
+                      builder.append('\t');
+                      count++;
                       break;
-                    // unicode cases:
+                    // unicode case:
                     case 'u':
+                      int begin = i;
                       for (int n = 0; n < 4; n++)
                         {
                           if (i + 1 < str.length())
                             {
                               ch = str.charAt(i + 1);
+                              System.out.println(ch);
                               if (Character.isUnicodeIdentifierPart(ch))
-                                i++;
+                                {
+                                  i++;
+                                  count++;
+                                } // if (Character.isUnicodeIdentifierPart(ch)) 
                               else
                                 throw new JSONException();
                             } // if i+1 < str.length()
                           else
                             throw new JSONException();
                         } // for (n)
+                      builder.append((char) Integer.parseInt(str.substring(begin + 1,
+                                                                           i + 1),
+                                                             16));
                       break;
                     default:
                       throw new JSONException();
                   } // switch (ch)
               } // else
           } // while
+          
         // return if we encounter '"'
         if (str.charAt(i) == '"')
-          return new JSONString(str.substring(0, i + 1));
+          {
+            JSONString s = new JSONString('"' + builder.toString() + '"');
+            s.length += count;
+
+            return s;
+          }
       } //else
     throw new JSONException();
 

@@ -1,6 +1,7 @@
 package zhangshe.json;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -65,15 +66,16 @@ public class JSONUI
             command = eyes.readLine();
             if (command.compareTo("o") == 0)
               {
+                // we are creating a JSONObject, which is a valid JSON structure
                 JSON.checkFirst = true;
                 val = object();
               } // command is o
             else if (command.compareTo("a") == 0)
               {
+                // we are creating a JSONArray, which is a valid JSON structure
                 JSON.checkFirst = true;
                 val = array();
               } // command is a
-
           } //  if command is "n"
 
         // print the JSONValue
@@ -89,9 +91,7 @@ public class JSONUI
 
         // clear the stored JSONValue
         else if (command.compareTo("c") == 0)
-          {
-            val = null;
-          } // if command is "c"
+          val = null;
 
         // quit the program
         else if (command.compareTo("q") == 0)
@@ -103,9 +103,7 @@ public class JSONUI
             return;
           }//  if command is "q"
         else
-          {
-            pen.println("Invalid Command!");
-          } // else
+          pen.println("Invalid Command!");
 
         // ask for new command
         pen.println();
@@ -156,7 +154,10 @@ public class JSONUI
         case 's': // string
           return string();
         case 'i': // information
-          //stub
+          BufferedReader br = new BufferedReader(new FileReader("JSONIntro"));
+          String line;
+          while ((line = br.readLine()) != null)
+            pen.println(line);
           break;
         case 'b': // go back
           return null;
@@ -186,6 +187,7 @@ public class JSONUI
 
     while (true)
       {
+        // key is always a String
         JSONString key = new JSONString("\"" + keyStr + "\"");
         while (keyStr.compareTo("q") != 0)
           {
@@ -266,9 +268,7 @@ public class JSONUI
     pen.println("Please enter the content of String, enter 'q' to leave: ");
     String str = eyes.readLine();
     if (str.compareTo("q") != 0)
-      {
-        return (JSONString) JSON.parse("\"" + str + "\"");
-      } // if str.compareTo("q") != 0
+      return (JSONString) JSON.parse("\"" + str + "\"");
     else
       return null;
   } // string()

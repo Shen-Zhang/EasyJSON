@@ -8,7 +8,6 @@ import java.util.Hashtable;
  *  A JSON representation of array
  * @author Shen Zhang
  *
- * Read
  */
 public class JSONObject
     implements JSONValue
