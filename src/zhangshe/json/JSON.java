@@ -22,17 +22,18 @@ public class JSON
    * Parse a string. See README.md for more details.
    * 
    * @throws JSONException
+   * @throws IOException 
    * @pre str is a valid string
    * @post A JSONValue is given, or a JSONException is thrown
    */
   public static JSONValue parse(String str)
     throws JSONException
   {
+
     if (str.length() == 0)
       throw new JSONException("Invalid Input: Expecting Object or Array");
 
     char ch = str.charAt(0);
-
     // check if the given string starts with '{' or '['
     if (!checkFirst && ch != '{' && ch != '[')
       {
@@ -68,12 +69,13 @@ public class JSON
 
                   // Any other characters are invalid input
                 default:
-                  throw new JSONException(str,
-                                          "Number, Object, Array, or Constnat",
+                  throw new JSONException(
+                                          str,
+                                          "Number, Object, Array, String, or Constant",
                                           0);
               } // switch(ch)
           } // if ch is not a digit or negative sign
-      } // if
+      } // else
   }// parse(String str)
 
   /**
@@ -83,6 +85,7 @@ public class JSON
    *          A valid string
    * @return JSONObject
    * @throws JSONException
+   * @throws IOException 
    * 
    * @pre str is a valid string
    * @post A JSONObject is given, or a JSONException is thrown
@@ -91,12 +94,13 @@ public class JSON
     throws JSONException
   {
 
+    if (str.charAt(0) != '{')
+      throw new JSONException();
     // Assume str.charAt(0) is '{', if str.charAt(1) is '}'
     // return an empty JSONObject
-    if (str.charAt(1) == '}')
+    else if (str.charAt(1) == '}')
       {
         JSONObject empty = new JSONObject();
-        empty.length++;
         return empty;
       } // if str.charAt(1) = }
 
@@ -108,18 +112,13 @@ public class JSON
       {
         // create a new JSONObject
         JSONObject obj = new JSONObject();
-        // Assume index 0 is '{'. Iteration starts from i = 1
         int i = 1;
 
         while (i < str.length())
           {
             // hit the end of an JSONObject
             if (str.charAt(i) == '}')
-              {
-                obj.length = i;
-                i++;
-                return obj;
-              } // if str.charAt(i) = }
+              return obj;
 
             // Get a JSONString as the key
             JSONString key = parseStr(str.substring(i));
@@ -135,20 +134,18 @@ public class JSON
                 JSONValue val = parse(str.substring(i));
                 // add a pair to the object
                 obj.add(key, val);
-
                 // skip over val
                 i += val.size();
                 // if JSONObject has more pairs
                 if (str.charAt(i) == ',')
-                  // skip over the comma
-                  i++;
+                  {
+                    // skip over the comma
+                    i++;
+                    obj.length++; // add ','
+                  } // if str.charAt(i) == ','
                 // if we hit the end of the JSONObject
                 else if (str.charAt(i) == '}')
-                  {
-                    obj.length = i + 1;
-                    i++;
-                    return obj;
-                  } // if str.charAt(i) = '}'
+                  return obj;
                 else
                   throw new JSONException(str, "',' or '}'", i);
               } // if str.charAt(i) != }
@@ -164,6 +161,7 @@ public class JSON
    *          A valid string
    * @return JSONString
    * @throws JSONException
+   * @throws IOException 
    * 
    * @pre str is a valid string
    * @post A JSONString is given, or a JSONException is thrown
@@ -171,18 +169,65 @@ public class JSON
   public static JSONString parseStr(String str)
     throws JSONException
   {
-    for (int i = 1; i < str.length(); i++)
+    // check if given string begins with '"'
+    if (str.charAt(0) != '"')
+      throw new JSONException();
+    else
       {
-        if (str.charAt(i) == '"')
+        int i = 1;
+        char ch = 0;
+        while (i < str.length() && (ch = str.charAt(i)) != '"')
           {
-            if (str.charAt(i + 1) != ',' && str.charAt(i + 1) != '}'
-                && str.charAt(i + 1) != ']' && str.charAt(i + 1) != ':')
-              throw new JSONException(str, "Invalid Input", i);
-            return new JSONString(str.substring(0, i + 1));
-          } // if
-      } // for(i)
+            if (ch != '\\')
+              {
+                i++;
+              } // if ch is not backslash
+            else
+              {
+                // ch is a backslash
+                ch = str.charAt(++i);
+
+                switch (ch)
+                  {
+                  // skip special characters:
+                    case '"':
+                    case '\\':
+                    case '/':
+                    case 'b':
+                    case 'f':
+                    case 'n':
+                    case 'r':
+                    case 't':
+                      i++;
+                      break;
+                    // unicode cases:
+                    case 'u':
+                      for (int n = 0; n < 4; n++)
+                        {
+                          if (i + 1 < str.length())
+                            {
+                              ch = str.charAt(i + 1);
+                              if (Character.isUnicodeIdentifierPart(ch))
+                                i++;
+                              else
+                                throw new JSONException();
+                            } // if i+1 < str.length()
+                          else
+                            throw new JSONException();
+                        } // for (n)
+                      break;
+                    default:
+                      throw new JSONException();
+                  } // switch (ch)
+              } // else
+          } // while
+        // return if we encounter '"'
+        if (str.charAt(i) == '"')
+          return new JSONString(str.substring(0, i + 1));
+      } //else
     throw new JSONException();
-  } // parseStr(String)
+
+  }// parseStr(String)
 
   /**
    * Parse a string to a JSONArray
@@ -191,6 +236,7 @@ public class JSON
    *          A valid string
    * @return JSONArray
    * @throws JSONException
+   * @throws IOException 
    * 
    * @pre str is a valid string
    * @post A JSONArray is given, or a JSONException is thrown
@@ -199,41 +245,46 @@ public class JSON
   public static JSONArray parseArr(String str)
     throws JSONException
   {
-    // create a JSONAray 
-    JSONArray arr = new JSONArray();
-
-    for (int i = 1; i < str.length(); i++)
+    if (str.charAt(0) != '[')
+      throw new JSONException();
+    else
       {
-        // hit the end of the array
-        if (str.charAt(i) == ']')
-          {
-            arr.length = i + 1;
-            i++;
-            return arr;
-          } // if str.charAt(i) = ']'
+        // create a JSONAray 
+        JSONArray arr = new JSONArray();
 
-        // parse the next JSONValue and add it to the array
-        JSONValue val = parse(str.substring(i));
-        arr.add(val);
-        // skip over val
-        i = i + val.size() - 1;
-        while (i + 1 < str.length())
+        for (int i = 1; i < str.length(); i++)
           {
-            if (str.charAt(i + 1) == ',')
+            // hit the end of the array
+            if (str.charAt(i) == ']')
+              return arr;
+
+            // parse the next JSONValue and add it to the array
+            JSONValue val = parse(str.substring(i));
+            arr.add(val);
+
+            // skip over val
+            i += val.size();
+
+            while (i < str.length())
               {
-                i++;
-                JSONValue temp = parse(str.substring(i + 1));
-                arr.add(temp);
-                i += temp.size();
-              } // if str.charAt(i+1) is ','
-            if (str.charAt(i + 1) == ']')
-              {
-                arr.length = i + 2;
-                return arr;
-              } // if str.charAt(i+1) is ']'
-            // else
-          } // if i+1 < str.length()
-      } // for(i)
+                if (str.charAt(i) == ',')
+                  {
+                    JSONValue temp = parse(str.substring(++i));
+                    arr.add(temp);
+                    arr.length++; // add ','
+                    i += temp.size();
+
+                  } // if str.charAt(i+1) is ','
+                else if (str.charAt(i) == ']')
+                  {
+                    return arr;
+                  } // if str.charAt(i+1) is ']'
+                else
+                  throw new JSONException(str, "',' or ']'", i);
+                // else
+              } // if i+1 < str.length()
+          } // for(i)
+      } // else
     throw new JSONException("Invalid input");
   }// parseArr(String)
 
@@ -359,6 +410,10 @@ public class JSON
                                   "Invalid input: JSONConstant expects null, true, or false.");
       } // switch (ch)
   } // parseConstant(String)
+
+  // +--------+----------------------------------------------------------
+  // | Helper |
+  // +--------+
 
   /**
    * A helper to help building JSONConstant or throwing exception

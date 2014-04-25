@@ -85,9 +85,16 @@ public class JSONString
   public void print(int format)
   {
     // format and print the string
-    pen.format("%" + format + "s", "");
-    pen.print(this.str);
+    pen.format("%" + (format+this.size()) + "s", this.str);
     pen.flush();
   } // print(String)
 
+  /**
+   * To get the type of this JSONValue
+   */
+  @Override
+  public String type()
+  {
+    return "JSONString";
+  } // type()
 } // class JSONString

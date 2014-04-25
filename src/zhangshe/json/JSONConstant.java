@@ -85,8 +85,7 @@ public class JSONConstant
   @Override
   public void print(int format)
   {
-    pen.format("%" + format + "s", "");
-    pen.print(this.constant);
+    pen.format("%" + format + "s", this.constant);
     pen.flush();
   } // print(String)
 
@@ -103,4 +102,12 @@ public class JSONConstant
     return this.constant.equals(constant.constant);
   } // isEqual(JSONConstant)
 
+  /**
+   * To get the type of this JSONValue
+   */
+  @Override
+  public String type()
+  {
+    return "JSONConstant";
+  } // type()
 } // class JSONConstant

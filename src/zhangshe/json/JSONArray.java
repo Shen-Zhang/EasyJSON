@@ -112,8 +112,8 @@ public class JSONArray
   public void print(int format)
   {
     // format and print the open brackets
-    pen.format("%" + format + "s", "");
-    pen.print("[");
+    pen.format("%" + -format + "s", "[");
+    //pen.print("[");
     // if the array is empty, then print the closed brackets and return
     if (array.size() == 0)
       pen.print("]");
@@ -125,32 +125,57 @@ public class JSONArray
         for (i = 0; i < array.size() - 1; i++)
           {
             // in order to have a better indentation, values are printed with 3 more spaces than the brackets
-            array.get(i).print(format + 3);
+            JSONValue next = array.get(i);
+            if (next.type().compareTo("JSONArray") == 0
+                || next.type().compareTo("JSONObject") == 0)
+              next.print(format + format);
+            else
+              next.print(format);
             pen.println(",");
           } // for (i)
         // print the last element in the array
-        array.get(i).print(format + 3);
+        JSONValue next = array.get(i);
+        if (next.type().compareTo("JSONArray") == 0
+            || next.type().compareTo("JSONObject") == 0)
+          next.print(format + format);
+        else
+          next.print(format);
         pen.println();
         // format and print the closed brackets
-        pen.format("%" + format + "s", "");
-        pen.print("]");
+        pen.format("%" + format + "s", "]");
+        //pen.print("]");
         pen.flush();
       } // if array.size() != 0
   } // print(int)
 
   /**
-   * Get a 
-   * @param index
+   * Get the value from this JSONArray
+   * @param index, an integer within the length of this.array
    * @return
+   * A JSONValue which is stored in the given index of this array 
    */
   public JSONValue get(int index)
   {
     return this.get(index);
   } // get(int)
-  
+
+  /**
+   * Set a given position with given value
+   * @param index, an integer within the length of this.array
+   * @param val, a valid JSONValue
+   * @post JSONArray is updated with given val added
+   */
   public void set(int index, JSONValue val)
   {
     this.array.set(index, val);
-  } // set
+  } // set(int, val)
 
+  /**
+   * To get the type of this JSONValue
+   */
+  @Override
+  public String type()
+  {
+    return "JSONArray";
+  } // type()
 } // class JSONArray

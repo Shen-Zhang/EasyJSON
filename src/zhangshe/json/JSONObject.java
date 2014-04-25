@@ -82,8 +82,6 @@ public class JSONObject
     // initialize the string to "{"
     String str = "{";
 
-    StringBuilder builder = new StringBuilder();
-
     Enumeration<JSONValue> keys = hash.keys(); // get all keys in the HashTable
 
     while (keys.hasMoreElements())
@@ -137,8 +135,9 @@ public class JSONObject
   public void print(int format)
   {
     // format and print the open bracket
-    pen.format("%" + format + "s", "");
-    pen.print("{");
+    pen.println();
+    pen.format("%" + format + "s", "{");
+    //pen.print("{");
 
     // get all keys in the HashTable
     Enumeration<JSONValue> keys = hash.keys();
@@ -158,16 +157,30 @@ public class JSONObject
             temp.print(format + 1);
             pen.print(":");
             pen.flush();
-            hash.get(temp).print(format);
+            JSONValue next = hash.get(temp);
+            if (next.type().compareTo("JSONArray") == 0
+                || next.type().compareTo("JSONObject") == 0)
+              next.print(format + temp.size());
+            else
+              next.print(format);
             if (keys.hasMoreElements())
               pen.print(",");
           } // for(i)
 
         // start a new line and put the closed bracket
         pen.println();
-        pen.format("%" + format + "s", "");
-        pen.print("}");
+        pen.format("%" + format + "s", "}");
+        //pen.print("}");
         pen.flush();
       } // if keys.hasMoreElments()
   } // print(String)
+
+  /**
+   * To get the type of this JSONValue
+   */
+  @Override
+  public String type()
+  {
+    return "JSONObject";
+  } // type()
 } // class JSONObject

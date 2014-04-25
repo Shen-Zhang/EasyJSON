@@ -67,18 +67,31 @@ public class JSONReal
     return length;
   } // size()
 
+  /**
+   * print the content in the JSONReal
+   */
   @Override
   public void print()
   {
     this.print(1);
   } // print()
 
+  /**
+   * print the content in the JSONReal, format the result with given number of spaces
+   */
   @Override
   public void print(int format)
   {
-    pen.format("%" + format + "s", "");
-    pen.print(this.real);
+    pen.format("%" + (format + this.size()) + "s", this.real);
     pen.flush();
   } // print(String)
 
+  /**
+   * To get the type of this JSONValue
+   */
+  @Override
+  public String type()
+  {
+    return "JSONReal";
+  } // type()
 } // class JSONReal

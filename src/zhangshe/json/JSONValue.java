@@ -30,4 +30,10 @@ public interface JSONValue
    * Print a JSONValue. The result is formatted by the given number of spaces
    */
   public void print(int format);
+
+  /**
+   * To get the type of the JSONValue, like JSONObject, JSONArray, JSONReal, JSONConstant, and JSONString
+   * @return A string, which specifies the type of this JSONValue
+   */
+  public String type();
 } // interface JSonObject
