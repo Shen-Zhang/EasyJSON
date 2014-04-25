@@ -27,7 +27,8 @@ JSONString.java -- The class of JSONString
 JSONException.java -- Throws exception and provides error message		
 JSONTest.java -- Tests the parse in JSON.java and toString() method in JSONValue	
 JSONUI.java -- An user interface which allows users to create and print a JSONValue		
-Citation -- A file containing all references	
+Citation -- A file containing all references
+JSONIntro -- An introduction of JSON
 
 
 How to use it?
