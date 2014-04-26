@@ -1,4 +1,4 @@
-JSONtools
+EasyJSON
 =========
 Program Version 1.0 04/25/2014
 Author: Shen Zhang
@@ -6,7 +6,7 @@ Author: Shen Zhang
 
 What is it?
 -----------
-JSONtools can parse Java String to JSON(JavaScript Object Notation), which is a lightweight, data interchange format, and it can covert a JSON back to String. It also provides print method, which prints a JSON in a nice and easy-to-read format. For users who are not familier with JSON, they can use the user interface in JSONUI.java, which provides instructions to build a JSON.
+EasyJSON can parse Java String to JSON(JavaScript Object Notation), which is a lightweight, data interchange format, and it can covert a JSON back to String. It also provides print method, which prints a JSON in a nice and easy-to-read format. For users who are not familier with JSON, they can use the user interface in JSONUI.java, which provides instructions to build a JSON.
 
 Here is some basic information of JSON:	
 JSON is built on two structures: array or objects. Array begins with '[' (left bracket) and ends with ']' (right bracket). It's an ordered collection of values, and each value is separated by ',' (comma). Object begins with '{' (left brace) and ends '}' (right brace). It stores pairs of key and values. Each key is followed by ':', and each pair is separated by ',' (comma). 
