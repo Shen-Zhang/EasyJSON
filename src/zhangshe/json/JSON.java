@@ -24,7 +24,7 @@ public class JSON
    * @throws JSONException
    * @throws IOException 
    * @pre str is a valid string
-   * @post A JSONValue is given, or a JSONException is thrown
+   * @post A JSONValue is given as the content of str, or a JSONException is thrown
    */
   public static JSONValue parse(String str)
     throws JSONException
@@ -88,7 +88,7 @@ public class JSON
    * @throws IOException 
    * 
    * @pre str is a valid string
-   * @post A JSONObject is given, or a JSONException is thrown
+   * @post A JSONObject is given as the content of str, or a JSONException is thrown
    */
   public static JSONObject parseObj(String str)
     throws JSONException
@@ -97,7 +97,7 @@ public class JSON
     if (str.charAt(0) != '{')
       throw new JSONException();
     // Assume str.charAt(0) is '{', if str.charAt(1) is '}'
-    // return an empty JSONObject
+    // special case: return an empty JSONObject
     else if (str.charAt(1) == '}')
       {
         JSONObject empty = new JSONObject();
@@ -164,7 +164,7 @@ public class JSON
    * @throws IOException 
    * 
    * @pre str is a valid string
-   * @post A JSONString is given, or a JSONException is thrown
+   * @post A JSONString is given as the content of str, or a JSONException is thrown
    */
   public static JSONString parseStr(String str)
     throws JSONException
@@ -244,7 +244,8 @@ public class JSON
                                   count++;
                                 } // if (Character.isUnicodeIdentifierPart(ch)) 
                               else
-                                throw new JSONException();
+                                throw new JSONException(str, "a valid Unicode",
+                                                        i);
                             } // if i+1 < str.length()
                           else
                             throw new JSONException();
@@ -258,7 +259,7 @@ public class JSON
                   } // switch (ch)
               } // else
           } // while
-          
+
         // return if we encounter '"'
         if (str.charAt(i) == '"')
           {
@@ -340,7 +341,7 @@ public class JSON
    * @throws JSONException
    * 
    * @pre str is a valid string
-   * @post A JSONReal is given, or a JSONException is thrown
+   * @post A JSONReal is given as content of str, or a JSONException is thrown
    */
   public static JSONReal parseNum(String str)
     throws JSONException
@@ -434,7 +435,7 @@ public class JSON
    * @throws JSONException
    * 
    * @pre str is a valid string
-   * @post A JSONConstant is given, or a JSONException is thrown
+   * @post A JSONConstant is given as content of str, or a JSONException is thrown
    */
   public static JSONConstant parseConstant(String str)
     throws JSONException

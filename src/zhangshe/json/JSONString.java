@@ -85,7 +85,7 @@ public class JSONString
   public void print(int format)
   {
     // format and print the string
-    pen.format("%" + (format+this.length) + "s", this.str);
+    pen.format("%" + (format + this.length) + "s", this.str);
     pen.flush();
   } // print(String)
 

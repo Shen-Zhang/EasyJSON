@@ -13,7 +13,8 @@ public class JSONParserEXPT
 {
 
   public static void main(String[] args)
-    throws JSONException, IOException
+    throws JSONException,
+      IOException
   {
     PrintWriter pen = new PrintWriter(System.out, true);
     String i = "[[[[[[]]]]]]";
@@ -25,7 +26,7 @@ public class JSONParserEXPT
     String d = "{\"a\":\"rebelsky\",\"b\":354,\"c\":3214,\"d\":32154}";
 
     String f = "[{\"a\":[1,23],\"b\":true},{\"c\":{\"C\":0},\"d\":10},null]";
-    JSONValue val = JSON.parse(a);
+    JSONValue val = JSON.parse(d);
     val.print();
     //pen.println(val.toString());
 
